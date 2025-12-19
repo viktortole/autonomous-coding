@@ -393,8 +393,8 @@ async def monitoring_loop(args):
                 async with client:
                     ai_status, ai_response, tokens = await stream_agent_response(
                         client, prompt,
-                        print_tool_use_fn=print_tool_use,
-                        print_tool_result_fn=print_tool_result
+                        on_tool_use=print_tool_use,
+                        on_tool_result=print_tool_result
                     )
 
                 state.token_usage_today += tokens
