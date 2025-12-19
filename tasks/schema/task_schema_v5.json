@@ -1,0 +1,355 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "autoagents-task-schema-v5",
+  "title": "AUTOAGENTS Task Schema v5.0.0",
+  "description": "Unified task schema for all AUTOAGENTS runners (task, frontend, sentinel)",
+  "type": "object",
+  "required": ["_schema", "project", "queue", "tasks"],
+  "properties": {
+    "_schema": {
+      "type": "object",
+      "description": "Schema metadata",
+      "required": ["version", "name"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Schema version (semver)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable schema name"
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "description": "Creation date"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author or team"
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "description": "Project configuration",
+      "required": ["name", "root"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "root": {
+          "type": "string",
+          "description": "Absolute path to project root"
+        },
+        "stack": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Technology stack"
+        },
+        "commands": {
+          "type": "object",
+          "description": "Common commands",
+          "properties": {
+            "dev": {"type": "string"},
+            "build": {"type": "string"},
+            "test": {"type": "string"},
+            "lint": {"type": "string"},
+            "typecheck": {"type": "string"}
+          }
+        }
+      }
+    },
+    "queue": {
+      "type": "object",
+      "description": "Task queues by status",
+      "properties": {
+        "pending": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Task IDs not yet started"
+        },
+        "in_progress": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Task IDs currently being worked on"
+        },
+        "completed": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Successfully completed task IDs"
+        },
+        "failed": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Failed task IDs"
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "description": "Array of task definitions",
+      "items": {
+        "$ref": "#/definitions/task"
+      }
+    }
+  },
+  "definitions": {
+    "task": {
+      "type": "object",
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+-\\d{3}$",
+          "description": "Unique task identifier (e.g., TASK-001, FRONTEND-001)"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Short task title"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["bugfix", "feature", "enhancement", "refactor", "test", "docs", "health-monitoring", "auto-repair"],
+          "description": "Task category"
+        },
+        "module": {
+          "type": "string",
+          "description": "Target module (e.g., dashboard, focusguardian)"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"],
+          "default": "medium",
+          "description": "Task priority"
+        },
+        "complexity": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"],
+          "default": "medium",
+          "description": "Estimated complexity"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "completed", "failed", "blocked"],
+          "description": "Current status"
+        },
+        "agent": {
+          "type": "string",
+          "description": "Assigned agent (e.g., JARVIS1, SENTINEL, CONFIG_FRONTEND)"
+        },
+        "iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5,
+          "description": "Max iterations for this task"
+        },
+        "description": {
+          "type": "object",
+          "description": "Detailed description",
+          "properties": {
+            "problem": {"type": "string", "description": "What problem this solves"},
+            "goal": {"type": "string", "description": "What success looks like"},
+            "scope": {"type": "string", "description": "What is in/out of scope"},
+            "user_impact": {"type": "string", "description": "How users are affected"}
+          }
+        },
+        "thinking_prompts": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Guiding questions for the AI"
+        },
+        "files": {
+          "type": "object",
+          "description": "File references",
+          "properties": {
+            "target": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Files to modify"
+            },
+            "context": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Files to read for context"
+            },
+            "tests": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Related test files"
+            },
+            "forbidden": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Files not to touch"
+            }
+          }
+        },
+        "knowledge": {
+          "type": "object",
+          "description": "Domain knowledge for the task",
+          "properties": {
+            "gold_standard": {"type": "string", "description": "Example of good implementation"},
+            "patterns_to_follow": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Patterns to use"
+            },
+            "anti_patterns": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Patterns to avoid"
+            },
+            "code_example": {"type": "string", "description": "Example code snippet"}
+          }
+        },
+        "implementation": {
+          "type": "object",
+          "description": "Implementation guidance",
+          "properties": {
+            "steps": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Ordered implementation steps"
+            },
+            "patterns": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Design patterns to use"
+            }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "description": "How to verify completion",
+          "properties": {
+            "pre_checks": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Checks before starting"
+            },
+            "commands": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Commands to run for verification"
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Conditions for success"
+            },
+            "manual_test": {"type": "string", "description": "Manual testing instructions"}
+          }
+        },
+        "execution": {
+          "type": "object",
+          "description": "Execution details (for sentinel tasks)",
+          "properties": {
+            "bash_commands": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Commands to run"
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "failure_indicators": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        },
+        "architecture": {
+          "type": "object",
+          "description": "Architectural context",
+          "properties": {
+            "module": {"type": "string"},
+            "layer": {"type": "string", "enum": ["ui", "business", "data", "infra"]},
+            "related_modules": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "data_flow": {"type": "string"}
+          }
+        },
+        "quality_rubric": {
+          "type": "object",
+          "description": "Quality scoring criteria",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "weight": {"type": "number"},
+              "criteria": {"type": "string"}
+            }
+          }
+        },
+        "intelligence": {
+          "type": "object",
+          "description": "Additional intelligence for the agent",
+          "properties": {
+            "notes": {"type": "string"},
+            "known_issues": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "tips": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "estimated_minutes": {"type": "integer"},
+            "token_budget": {"type": "integer"}
+          }
+        },
+        "rollback": {
+          "type": "object",
+          "description": "Rollback instructions",
+          "properties": {
+            "if_breaks": {"type": "string"},
+            "git_command": {"type": "string"}
+          }
+        },
+        "dependencies": {
+          "type": "object",
+          "description": "Task dependencies",
+          "properties": {
+            "depends_on": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Task IDs this depends on"
+            },
+            "blocks": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Task IDs blocked by this"
+            },
+            "npm_packages": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Required npm packages"
+            }
+          }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Criteria for task acceptance"
+        },
+        "design": {
+          "type": "object",
+          "description": "Design specifications (for frontend tasks)",
+          "additionalProperties": {"type": "string"}
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modification timestamp"
+        }
+      }
+    }
+  }
+}

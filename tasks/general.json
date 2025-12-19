@@ -1,0 +1,998 @@
+{
+  "_schema": {
+    "version": "3.0.0",
+    "name": "AUTOAGENTS Task Intelligence System",
+    "description": "Ultimate task definitions engineered for Claude Code autonomous agents",
+    "created": "2025-12-19",
+    "author": "AUTOAGENTS",
+    "philosophy": "Every task gives the agent COMPLETE context to succeed autonomously"
+  },
+  "agent_protocol": {
+    "description": "Instructions every agent must follow before starting ANY task",
+    "pre_flight": [
+      "1. Read this entire task definition thoroughly",
+      "2. Read all context files listed before writing ANY code",
+      "3. Run verification.pre_checks commands to understand current state",
+      "4. If anything is unclear, STOP and document the question",
+      "5. Enter Plan Mode for tasks marked complexity: hard"
+    ],
+    "thinking_mode": {
+      "default": "ULTRATHINK",
+      "trigger_phrases": [
+        "Think step-by-step about this problem",
+        "What could go wrong here?",
+        "What's the simplest solution that works?",
+        "How would a senior engineer approach this?"
+      ]
+    },
+    "checkpoints": {
+      "after_reading": "Summarize what you understand before coding",
+      "after_implementation": "Run all verification commands",
+      "after_tests_pass": "Review code for edge cases and quality",
+      "before_completion": "Self-assess against quality_rubric"
+    },
+    "communication": {
+      "progress_format": "Update task status in feature_list.json queue section",
+      "blocker_format": "Add to intelligence.blockers_found array with timestamp",
+      "completion_format": "Move task ID to queue.completed, add completion_log entry"
+    },
+    "tools_available": {
+      "claude_code": [
+        "Task (subagents)",
+        "Glob",
+        "Grep",
+        "Read",
+        "Edit",
+        "Write",
+        "Bash"
+      ],
+      "workflows": [
+        "Plan Mode for complex tasks",
+        "TodoWrite for tracking",
+        "WebSearch for docs"
+      ],
+      "mcp": [
+        "Puppeteer for visual testing if configured"
+      ]
+    }
+  },
+  "project": {
+    "name": "Control Station",
+    "root": "C:/Users/ToleV/Desktop/TestingFolder/control-station",
+    "stack": [
+      "Next.js 16",
+      "React 19",
+      "TypeScript 5",
+      "Tauri 2.9",
+      "Rust",
+      "SQLite",
+      "Axum"
+    ],
+    "architecture": {
+      "frontend": "src/modules/* - Feature modules with components, hooks, services",
+      "backend": "src-tauri/src/* - Rust backend with Axum HTTP + Tauri commands",
+      "shared": "src/services/* - Shared services (API, audio, database)"
+    },
+    "gold_standard": {
+      "module": "src/modules/alarm",
+      "why": "Perfect separation of concerns, proper hooks, full test coverage",
+      "study_files": [
+        "src/modules/alarm/components/AlarmManager.tsx",
+        "src/modules/alarm/hooks/useAlarm.ts",
+        "src/modules/alarm/__tests__/useAlarm.test.ts"
+      ]
+    },
+    "commands": {
+      "dev": "npm run dev",
+      "build": "npm run build",
+      "test": "npm test",
+      "test_specific": "npm test -- --grep {pattern}",
+      "typecheck": "npx tsc --noEmit",
+      "lint": "npm run lint"
+    },
+    "modules_with_active_agents": [
+      "dashboard",
+      "focus-guardian",
+      "james"
+    ],
+    "modules_available_for_tasks": [
+      "activity-log",
+      "alerts-panel",
+      "device-control",
+      "gamification",
+      "module-manager",
+      "settings",
+      "system-monitor",
+      "jarvis-ai"
+    ]
+  },
+  "agents": {
+    "JARVIS1": {
+      "model": "claude-sonnet-4-20250514",
+      "role": "Primary Development",
+      "mode": "ULTRATHINK",
+      "expertise": [
+        "React Hooks",
+        "TypeScript",
+        "Component Architecture"
+      ],
+      "personality": "Methodical, thorough, prefers simple solutions"
+    },
+    "JARVIS2": {
+      "model": "claude-sonnet-4-20250514",
+      "role": "Testing & QA",
+      "mode": "ULTRATHINK",
+      "expertise": [
+        "Vitest",
+        "Testing Library",
+        "Coverage Analysis",
+        "Bug Hunting"
+      ],
+      "personality": "Skeptical, tests edge cases, questions assumptions"
+    },
+    "JARVIS3": {
+      "model": "claude-sonnet-4-20250514",
+      "role": "Backend & Integration",
+      "mode": "ULTRATHINK",
+      "expertise": [
+        "Rust",
+        "Axum",
+        "SQLite",
+        "API Design",
+        "Performance"
+      ],
+      "personality": "Performance-focused, thinks about scale"
+    },
+    "JARVIS4": {
+      "model": "claude-sonnet-4-20250514",
+      "role": "UI & Polish",
+      "mode": "ULTRATHINK",
+      "expertise": [
+        "React",
+        "CSS/Tailwind",
+        "Animations",
+        "UX",
+        "Accessibility"
+      ],
+      "personality": "Design-minded, user-focused, attention to detail"
+    },
+    "CMDTV": {
+      "model": "claude-opus-4-5-20250514",
+      "role": "Orchestrator & Senior Review",
+      "mode": "ULTRATHINK",
+      "expertise": [
+        "Architecture",
+        "Code Review",
+        "Complex Refactoring",
+        "Visual Testing"
+      ],
+      "personality": "Big-picture thinker, quality gatekeeper"
+    }
+  },
+  "global_rules": {
+    "forbidden_patterns": [
+      "src/modules/alarm/** - Gold standard, never modify",
+      ".claude/AGENTLOGGER.json - Multi-agent coordination file",
+      "package-lock.json - Auto-generated",
+      "*.lock - Lock files",
+      "node_modules/** - Dependencies"
+    ],
+    "required_before_completion": [
+      "npx tsc --noEmit - Must show 0 errors",
+      "npm run lint - Must pass",
+      "npm test - Related tests must pass"
+    ],
+    "code_patterns": {
+      "hooks": {
+        "rule": "Extract ALL logic to custom hooks, components are UI-only",
+        "example": "useAlerts.ts handles state/effects, AlertsPanel.tsx only renders"
+      },
+      "imports": {
+        "rule": "Use barrel exports (index.ts) and absolute paths (@/)",
+        "example": "import { useAlerts } from '@/modules/alerts-panel'"
+      },
+      "testing": {
+        "rule": "Co-locate tests in __tests__ folders, name as Component.test.tsx",
+        "example": "src/modules/alerts-panel/__tests__/useAlerts.test.ts"
+      },
+      "cleanup": {
+        "rule": "ALL useEffect hooks with subscriptions MUST have cleanup returns",
+        "example": "useEffect(() => { const id = setInterval(...); return () => clearInterval(id); }, [])"
+      }
+    }
+  },
+  "tasks": [
+    {
+      "id": "TASK-000",
+      "title": "Fix JAMES Vision Screenshot Threading Freeze",
+      "category": "bugfix",
+      "priority": "critical",
+      "status": "completed",
+      "agent": "JARVIS1",
+      "complexity": "hard",
+      "iterations": 3,
+      "description": {
+        "problem": "JAMES Current View (screenshot capture) freezes the entire app. Threading fix was previously implemented but regression occurred.",
+        "goal": "Fix the threading so screenshot capture runs in background without blocking UI",
+        "scope": "JAMES vision module threading - ensure capture runs off main thread",
+        "user_impact": "App freezes for 2-5 seconds on screenshot \u2192 Smooth non-blocking capture"
+      },
+      "thinking_prompts": [
+        "Where exactly is the screenshot being captured? Main thread or worker?",
+        "What was the previous threading fix and why did it regress?",
+        "Is the freeze during capture, processing, or both?",
+        "Should we use Web Worker, requestIdleCallback, or async/await properly?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/james/vision/CurrentView.tsx",
+          "src/modules/james/vision/screenshot.service.ts",
+          "src/modules/james/hooks/useVision.ts"
+        ],
+        "context": [
+          "src/modules/james/vision/index.ts",
+          "src/modules/james/types.ts",
+          "src-tauri/src/commands/screenshot.rs"
+        ],
+        "tests": [
+          "src/modules/james/__tests__/useVision.test.ts"
+        ],
+        "forbidden": [
+          "src/modules/alarm/**"
+        ]
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "Check how Tauri screenshot command is invoked",
+          "learn": "Proper async handling for Tauri commands"
+        },
+        "patterns_to_follow": [
+          "Use async/await properly with Tauri invoke",
+          "Show loading state while capture is in progress",
+          "Use AbortController for cancellation",
+          "Don't block render with heavy operations"
+        ],
+        "anti_patterns": [
+          "Don't await synchronously in component render",
+          "Don't process large images on main thread",
+          "Don't use blocking operations in useEffect",
+          "Never call Tauri commands without error handling"
+        ],
+        "code_example": {
+          "description": "Non-blocking screenshot capture pattern",
+          "code": "const captureScreenshot = useCallback(async () => {\n  setIsCapturing(true);\n  try {\n    // Run in next tick to not block current render\n    await new Promise(resolve => setTimeout(resolve, 0));\n    const screenshot = await invoke('capture_screenshot');\n    // Process in chunks or use worker for heavy processing\n    setScreenshot(screenshot);\n  } catch (error) {\n    console.error('Screenshot failed:', error);\n  } finally {\n    setIsCapturing(false);\n  }\n}, []);"
+        }
+      },
+      "verification": {
+        "pre_checks": [
+          "npm run dev - Open JAMES module",
+          "Click Current View - observe if app freezes"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep james",
+          "npm run build"
+        ],
+        "success_criteria": [
+          "Screenshot capture does NOT freeze the app",
+          "Loading indicator shows during capture",
+          "Screenshot displays correctly after capture",
+          "No TypeScript errors",
+          "All tests pass"
+        ],
+        "manual_test": [
+          "Open JAMES module in the app",
+          "Click Current View button multiple times rapidly",
+          "Verify app remains responsive during capture",
+          "Check that screenshots load correctly"
+        ]
+      },
+      "architecture": {
+        "module": "james/vision",
+        "layer": "frontend + backend (Tauri)",
+        "related_modules": [
+          "james/core",
+          "james/chat"
+        ],
+        "data_flow": "Button click \u2192 useVision hook \u2192 invoke Tauri command \u2192 receive base64 \u2192 display"
+      },
+      "intelligence": {
+        "notes": "This was fixed before but regressed. Check git history for the original fix. The issue is likely that screenshot capture or image processing blocks the main thread.",
+        "known_issues": [
+          "Tauri invoke is async but heavy image processing after can still block",
+          "Base64 encoding/decoding large images is CPU intensive",
+          "React state updates with large data can cause lag"
+        ],
+        "tips": [
+          "Check if the freeze is during Tauri invoke or after receiving data",
+          "Consider using a loading skeleton while capturing",
+          "Profile with React DevTools to find the blocking operation",
+          "May need to chunk large image data or use OffscreenCanvas"
+        ],
+        "estimated_minutes": 90
+      },
+      "quality_rubric": {
+        "functionality": "Screenshot works without freezing UI",
+        "performance": "Capture completes in <1s, no frame drops",
+        "code_quality": "Proper async handling, error boundaries",
+        "ux": "Loading state visible, smooth experience"
+      },
+      "rollback": {
+        "if_breaks": "Revert vision folder changes",
+        "git_command": "git checkout HEAD -- src/modules/james/vision/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": []
+      },
+      "last_updated": "2025-12-19T04:50:20.809218"
+    },
+    {
+      "id": "TASK-001",
+      "title": "Add Error Boundaries to Module Manager",
+      "category": "reliability",
+      "priority": "high",
+      "status": "pending",
+      "agent": "JARVIS1",
+      "complexity": "medium",
+      "iterations": 2,
+      "description": {
+        "problem": "Module Manager crashes the entire app when a module fails to load. No graceful error handling.",
+        "goal": "Wrap module components in error boundaries so failures are isolated and show friendly error UI.",
+        "scope": "Add ErrorBoundary component and integrate with ModuleManager",
+        "user_impact": "Users see white screen on module error \u2192 Users see error message with retry option"
+      },
+      "thinking_prompts": [
+        "What are all the ways a module could fail to load?",
+        "How should the error UI look? Minimal but informative.",
+        "Should we log errors somewhere for debugging?",
+        "How do we allow users to retry loading a failed module?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/module-manager/components/ErrorBoundary.tsx",
+          "src/modules/module-manager/components/ModuleManager.tsx"
+        ],
+        "context": [
+          "src/modules/module-manager/hooks/useModuleRegistry.ts",
+          "src/modules/module-manager/types.ts",
+          "src/modules/alarm/components/AlarmManager.tsx"
+        ],
+        "tests": [
+          "src/modules/module-manager/__tests__/ErrorBoundary.test.tsx"
+        ],
+        "forbidden": [
+          "src/modules/alarm/**"
+        ]
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "src/modules/alarm/components/AlarmManager.tsx",
+          "learn": "How it handles loading states and error states gracefully"
+        },
+        "patterns_to_follow": [
+          "React Error Boundary class component pattern (componentDidCatch)",
+          "Provide fallback UI with error message and retry button",
+          "Log error to console in development, could add telemetry later",
+          "Use TypeScript generics for type-safe error boundary"
+        ],
+        "anti_patterns": [
+          "Don't catch errors in functional components (use boundaries)",
+          "Don't show technical error details to users",
+          "Don't auto-retry infinitely (max 3 retries with backoff)",
+          "Don't swallow errors silently - always log"
+        ],
+        "code_example": {
+          "description": "Basic Error Boundary pattern",
+          "code": "class ErrorBoundary extends React.Component<Props, State> {\n  state = { hasError: false, error: null };\n  \n  static getDerivedStateFromError(error: Error) {\n    return { hasError: true, error };\n  }\n  \n  componentDidCatch(error: Error, errorInfo: ErrorInfo) {\n    console.error('Module error:', error, errorInfo);\n  }\n  \n  handleRetry = () => {\n    this.setState({ hasError: false, error: null });\n  };\n  \n  render() {\n    if (this.state.hasError) {\n      return <ErrorFallback error={this.state.error} onRetry={this.handleRetry} />;\n    }\n    return this.props.children;\n  }\n}"
+        }
+      },
+      "verification": {
+        "pre_checks": [
+          "npm test -- --grep ModuleManager",
+          "npx tsc --noEmit"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep ErrorBoundary",
+          "npm test -- --grep ModuleManager",
+          "npm run build"
+        ],
+        "success_criteria": [
+          "ErrorBoundary component exists and is typed correctly",
+          "ModuleManager wraps each module in ErrorBoundary",
+          "Throwing error in a module shows fallback UI, not white screen",
+          "Retry button resets error state and attempts reload",
+          "All tests pass, TypeScript compiles, build succeeds"
+        ],
+        "manual_test": [
+          "Temporarily add 'throw new Error()' in a module",
+          "Verify error boundary catches it and shows UI",
+          "Click retry, verify module attempts to reload",
+          "Remove the throw, verify normal operation"
+        ]
+      },
+      "architecture": {
+        "module": "module-manager",
+        "layer": "frontend",
+        "related_modules": [
+          "All modules that can be loaded dynamically"
+        ],
+        "data_flow": "ModuleManager \u2192 ErrorBoundary wrapper \u2192 Module component"
+      },
+      "intelligence": {
+        "notes": "This is a reliability improvement. React 18+ has improved error boundary support.",
+        "known_issues": [
+          "Error boundaries don't catch errors in event handlers (only render)",
+          "Async errors need different handling (try/catch in useEffect)"
+        ],
+        "tips": [
+          "Start with a simple boundary, add features incrementally",
+          "Test by intentionally throwing in a test component",
+          "Consider adding error boundary at app root too for catastrophic failures"
+        ],
+        "resources": [
+          "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
+        ],
+        "estimated_minutes": 45
+      },
+      "quality_rubric": {
+        "functionality": "Error boundary catches render errors and shows fallback",
+        "code_quality": "Clean TypeScript, follows project patterns",
+        "testing": "Unit tests cover error catching and retry",
+        "documentation": "JSDoc comments on public API"
+      },
+      "rollback": {
+        "if_breaks": "Revert changes to ModuleManager.tsx, delete ErrorBoundary.tsx",
+        "git_command": "git checkout HEAD -- src/modules/module-manager/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": []
+      }
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement Alert Sound Notifications",
+      "category": "feature",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "JARVIS4",
+      "complexity": "medium",
+      "iterations": 2,
+      "description": {
+        "problem": "Alerts panel shows visual notifications but has no sound. Users miss critical alerts.",
+        "goal": "Add optional sound notifications for different alert severity levels.",
+        "scope": "Integrate existing audio.service with alerts-panel module",
+        "user_impact": "Silent alerts \u2192 Audio feedback for important alerts"
+      },
+      "thinking_prompts": [
+        "What sound should play for each severity level (info, warning, error, critical)?",
+        "Should sounds be configurable in settings?",
+        "How do we avoid annoying users with too many sounds?",
+        "What about users who have system sounds muted?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/alerts-panel/hooks/useAlerts.ts",
+          "src/modules/alerts-panel/components/AlertsPanel.tsx"
+        ],
+        "context": [
+          "src/services/audio.service.ts",
+          "src/modules/gamification/services/sound.service.ts",
+          "src/modules/settings/hooks/useSettings.ts",
+          "src/modules/alerts-panel/types.ts"
+        ],
+        "tests": [
+          "src/modules/alerts-panel/__tests__/useAlerts.test.ts"
+        ],
+        "forbidden": [
+          "src/modules/alarm/**"
+        ]
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "src/modules/gamification/services/sound.service.ts",
+          "learn": "How sound service is structured, Web Audio API usage"
+        },
+        "patterns_to_follow": [
+          "Use existing audio.service or sound.service, don't create new",
+          "Make sounds configurable via settings (enable/disable per severity)",
+          "Debounce sounds to prevent audio spam",
+          "Check user preferences before playing"
+        ],
+        "anti_patterns": [
+          "Don't play sounds without user consent/setting",
+          "Don't block UI while loading audio",
+          "Don't play overlapping sounds (queue or skip)",
+          "Don't hardcode sound file paths"
+        ],
+        "code_example": {
+          "description": "Playing sound on alert with debounce",
+          "code": "const playAlertSound = useMemo(() => \n  debounce((severity: AlertSeverity) => {\n    if (!settings.alertSoundsEnabled) return;\n    const soundMap = {\n      info: 'notification-soft',\n      warning: 'notification-warning',\n      error: 'notification-error',\n      critical: 'notification-urgent'\n    };\n    audioService.play(soundMap[severity]);\n  }, 500),\n[settings.alertSoundsEnabled]);"
+        }
+      },
+      "verification": {
+        "pre_checks": [
+          "npm test -- --grep alerts",
+          "Check if audio.service exists and exports play function"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep useAlerts",
+          "npm run build"
+        ],
+        "success_criteria": [
+          "New alerts trigger appropriate sound based on severity",
+          "Sound can be disabled in settings",
+          "Rapid alerts don't cause audio chaos (debounced)",
+          "Works with existing audio service",
+          "Tests pass, TypeScript compiles"
+        ],
+        "manual_test": [
+          "Enable alert sounds in settings",
+          "Trigger alerts of different severities",
+          "Verify correct sound plays for each",
+          "Disable sounds, verify silence"
+        ]
+      },
+      "architecture": {
+        "module": "alerts-panel",
+        "layer": "frontend",
+        "related_modules": [
+          "settings",
+          "gamification (sound.service)"
+        ],
+        "data_flow": "Alert triggered \u2192 useAlerts hook \u2192 check settings \u2192 play sound via audio.service"
+      },
+      "intelligence": {
+        "notes": "gamification/sound.service.ts already has Web Audio API setup. Reuse it.",
+        "known_issues": [
+          "Web Audio requires user interaction before playing (browser policy)",
+          "Audio files might not exist yet - may need placeholder sounds"
+        ],
+        "tips": [
+          "Test in actual browser, not just unit tests",
+          "Use simple beeps/tones if audio files don't exist",
+          "Add volume control later as enhancement"
+        ],
+        "resources": [
+          "https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API"
+        ],
+        "estimated_minutes": 60
+      },
+      "quality_rubric": {
+        "functionality": "Sounds play for alerts, respects settings",
+        "code_quality": "Reuses existing services, proper debouncing",
+        "testing": "Mocked audio service in tests",
+        "ux": "Not annoying, appropriate sounds for severity"
+      },
+      "rollback": {
+        "if_breaks": "Revert useAlerts.ts changes",
+        "git_command": "git checkout HEAD -- src/modules/alerts-panel/hooks/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": []
+      }
+    },
+    {
+      "id": "TASK-003",
+      "title": "Add Keyboard Shortcuts to Device Control",
+      "category": "feature",
+      "priority": "low",
+      "status": "pending",
+      "agent": "JARVIS1",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Device control requires mouse clicks for every action. Power users want keyboard shortcuts.",
+        "goal": "Add keyboard shortcuts for common device control actions.",
+        "scope": "Add keyboard event listeners to device-control module",
+        "user_impact": "Mouse-only \u2192 Keyboard shortcuts for efficiency"
+      },
+      "thinking_prompts": [
+        "What are the most common actions that need shortcuts?",
+        "What key combinations make sense and don't conflict?",
+        "Should shortcuts be customizable?",
+        "How do we show users what shortcuts are available?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/device-control/hooks/useKeyboardShortcuts.ts",
+          "src/modules/device-control/components/DeviceControl.tsx"
+        ],
+        "context": [
+          "src/modules/device-control/hooks/useDeviceControl.ts",
+          "src/modules/device-control/types.ts"
+        ],
+        "tests": [
+          "src/modules/device-control/__tests__/useKeyboardShortcuts.test.ts"
+        ],
+        "forbidden": []
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "Check if any module already has keyboard shortcuts to follow pattern",
+          "learn": "Consistent keyboard handling across app"
+        },
+        "patterns_to_follow": [
+          "Use a custom hook for keyboard event management",
+          "Clean up event listeners in useEffect return",
+          "Use standard key combinations (Ctrl+X on Windows, Cmd+X on Mac)",
+          "Show shortcuts in tooltips or help modal"
+        ],
+        "anti_patterns": [
+          "Don't attach listeners to document without cleanup",
+          "Don't override browser shortcuts (Ctrl+C, Ctrl+V, etc.)",
+          "Don't make shortcuts work when user is typing in input fields"
+        ],
+        "code_example": {
+          "description": "Keyboard shortcut hook pattern",
+          "code": "export function useKeyboardShortcuts(shortcuts: ShortcutMap) {\n  useEffect(() => {\n    const handleKeyDown = (e: KeyboardEvent) => {\n      // Skip if user is typing\n      if (e.target instanceof HTMLInputElement) return;\n      \n      const key = `${e.ctrlKey ? 'Ctrl+' : ''}${e.key}`;\n      const action = shortcuts[key];\n      if (action) {\n        e.preventDefault();\n        action();\n      }\n    };\n    \n    window.addEventListener('keydown', handleKeyDown);\n    return () => window.removeEventListener('keydown', handleKeyDown);\n  }, [shortcuts]);\n}"
+        }
+      },
+      "verification": {
+        "pre_checks": [
+          "npm test -- --grep DeviceControl"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep useKeyboardShortcuts",
+          "npm run build"
+        ],
+        "success_criteria": [
+          "Keyboard shortcuts trigger device control actions",
+          "Shortcuts don't fire when typing in inputs",
+          "Event listeners are cleaned up on unmount",
+          "Tests pass, TypeScript compiles"
+        ],
+        "manual_test": [
+          "Press defined shortcuts, verify actions trigger",
+          "Focus an input field, verify shortcuts don't fire",
+          "Navigate away, verify no memory leaks"
+        ]
+      },
+      "architecture": {
+        "module": "device-control",
+        "layer": "frontend",
+        "related_modules": [],
+        "data_flow": "Keydown event \u2192 useKeyboardShortcuts \u2192 call device control action"
+      },
+      "intelligence": {
+        "notes": "Keep initial shortcuts simple. Can expand based on user feedback.",
+        "known_issues": [
+          "Mac vs Windows key differences (Ctrl vs Cmd)",
+          "Some keys behave differently in Tauri desktop vs web"
+        ],
+        "tips": [
+          "Start with 3-5 most common actions",
+          "Log which shortcuts are used for analytics later",
+          "Consider adding a shortcuts help overlay"
+        ],
+        "suggested_shortcuts": {
+          "Ctrl+1": "Toggle device 1",
+          "Ctrl+2": "Toggle device 2",
+          "Ctrl+R": "Refresh device status",
+          "Escape": "Close device panel"
+        },
+        "estimated_minutes": 30
+      },
+      "quality_rubric": {
+        "functionality": "Shortcuts work as expected",
+        "code_quality": "Clean hook, proper cleanup",
+        "testing": "Event simulation tests",
+        "documentation": "Comments listing available shortcuts"
+      },
+      "rollback": {
+        "if_breaks": "Remove useKeyboardShortcuts import from DeviceControl",
+        "git_command": "git checkout HEAD -- src/modules/device-control/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": []
+      }
+    },
+    {
+      "id": "TASK-004",
+      "title": "Implement Activity Log Export Feature",
+      "category": "feature",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "JARVIS3",
+      "complexity": "medium",
+      "iterations": 2,
+      "description": {
+        "problem": "Users cannot export their activity log data for analysis or backup.",
+        "goal": "Add export functionality for activity logs in CSV and JSON formats.",
+        "scope": "Add export button and backend endpoint for data export",
+        "user_impact": "Data locked in app \u2192 Users can export and analyze their data"
+      },
+      "thinking_prompts": [
+        "What data should be included in the export?",
+        "CSV or JSON or both? What's most useful?",
+        "Should there be date range filtering for exports?",
+        "How do we handle large exports without blocking UI?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/activity-log/components/ExportButton.tsx",
+          "src/modules/activity-log/hooks/useActivityExport.ts",
+          "src-tauri/src/api/activity.rs"
+        ],
+        "context": [
+          "src/modules/activity-log/hooks/useActivityLog.ts",
+          "src/modules/activity-log/types.ts",
+          "src-tauri/src/database/activity.rs",
+          "python/scripts/export_activity_log.py"
+        ],
+        "tests": [
+          "src/modules/activity-log/__tests__/useActivityExport.test.ts"
+        ],
+        "forbidden": []
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "python/scripts/export_activity_log.py",
+          "learn": "What data fields to export, format structure"
+        },
+        "patterns_to_follow": [
+          "Use Blob API for client-side file generation",
+          "Stream large exports to avoid memory issues",
+          "Add loading state during export",
+          "Use standardized date formats (ISO 8601)"
+        ],
+        "anti_patterns": [
+          "Don't load entire dataset into memory for large exports",
+          "Don't block UI during export generation",
+          "Don't expose sensitive data in exports"
+        ],
+        "code_example": {
+          "description": "Client-side CSV download",
+          "code": "function downloadCSV(data: ActivityEntry[], filename: string) {\n  const headers = ['timestamp', 'type', 'duration', 'category'];\n  const rows = data.map(e => [e.timestamp, e.type, e.duration, e.category]);\n  const csv = [headers, ...rows].map(r => r.join(',')).join('\\n');\n  \n  const blob = new Blob([csv], { type: 'text/csv' });\n  const url = URL.createObjectURL(blob);\n  const a = document.createElement('a');\n  a.href = url;\n  a.download = filename;\n  a.click();\n  URL.revokeObjectURL(url);\n}"
+        }
+      },
+      "verification": {
+        "pre_checks": [
+          "npm test -- --grep activity",
+          "Check python/scripts/export_activity_log.py for expected format"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep useActivityExport",
+          "npm run build"
+        ],
+        "success_criteria": [
+          "Export button visible in activity log UI",
+          "Clicking export downloads file in selected format",
+          "Export contains correct data fields",
+          "Large exports don't crash or freeze UI",
+          "Tests pass, TypeScript compiles"
+        ],
+        "manual_test": [
+          "Open activity log with some data",
+          "Click export button, select CSV",
+          "Verify downloaded file opens in Excel/Numbers",
+          "Try JSON export, verify valid JSON structure"
+        ]
+      },
+      "architecture": {
+        "module": "activity-log",
+        "layer": "frontend + backend",
+        "related_modules": [
+          "python/scripts (existing export logic)"
+        ],
+        "data_flow": "Button click \u2192 useActivityExport \u2192 fetch from API \u2192 generate Blob \u2192 download"
+      },
+      "intelligence": {
+        "notes": "There's already a Python export script. Match its format for consistency.",
+        "known_issues": [
+          "Very long activity logs might be slow to export",
+          "Date formats vary by locale - use ISO 8601"
+        ],
+        "tips": [
+          "Start with frontend-only export using existing API data",
+          "Add backend streaming endpoint later for large exports",
+          "Consider adding date range picker for filtered exports"
+        ],
+        "estimated_minutes": 75
+      },
+      "quality_rubric": {
+        "functionality": "Export works for both CSV and JSON",
+        "code_quality": "Proper TypeScript types, error handling",
+        "testing": "Mocked fetch in tests, blob generation tested",
+        "ux": "Loading indicator during export, success toast"
+      },
+      "rollback": {
+        "if_breaks": "Remove ExportButton from UI, keep hook for future",
+        "git_command": "git checkout HEAD -- src/modules/activity-log/components/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": []
+      }
+    },
+    {
+      "id": "TASK-005",
+      "title": "Add System Monitor Performance Graphs",
+      "category": "enhancement",
+      "priority": "low",
+      "status": "pending",
+      "agent": "JARVIS4",
+      "complexity": "hard",
+      "iterations": 3,
+      "description": {
+        "problem": "System monitor shows current stats only. No historical view or trends.",
+        "goal": "Add real-time performance graphs for CPU, memory, and disk usage.",
+        "scope": "Create chart components and integrate with system-monitor module",
+        "user_impact": "Point-in-time stats \u2192 Historical trends and visualizations"
+      },
+      "thinking_prompts": [
+        "What charting library fits best? Lightweight, TypeScript support?",
+        "How much history should we keep? 1 hour? 24 hours?",
+        "How do we update charts smoothly without re-rendering everything?",
+        "What's the right polling interval for system stats?"
+      ],
+      "files": {
+        "target": [
+          "src/modules/system-monitor/components/PerformanceGraph.tsx",
+          "src/modules/system-monitor/hooks/usePerformanceHistory.ts",
+          "src/modules/system-monitor/components/SystemMonitor.tsx"
+        ],
+        "context": [
+          "src/modules/system-monitor/hooks/useSystemMonitor.ts",
+          "src/modules/system-monitor/types.ts",
+          "src-tauri/src/commands/system.rs"
+        ],
+        "tests": [
+          "src/modules/system-monitor/__tests__/PerformanceGraph.test.tsx"
+        ],
+        "forbidden": []
+      },
+      "knowledge": {
+        "gold_standard": {
+          "file": "Consider using recharts or lightweight alternative",
+          "learn": "React charting best practices"
+        },
+        "patterns_to_follow": [
+          "Use a dedicated hook for performance history state",
+          "Circular buffer for fixed-size history (no memory growth)",
+          "Debounce chart updates to 60fps max",
+          "Lazy load chart library to reduce bundle size"
+        ],
+        "anti_patterns": [
+          "Don't re-render entire chart on every data point",
+          "Don't store unlimited history (memory leak)",
+          "Don't poll too frequently (CPU waste)",
+          "Don't use heavy charting libraries (Chart.js is heavy)"
+        ],
+        "code_example": {
+          "description": "Circular buffer for performance history",
+          "code": "const MAX_HISTORY = 60; // 1 minute at 1s interval\n\nfunction usePerformanceHistory() {\n  const [history, setHistory] = useState<DataPoint[]>([]);\n  \n  const addDataPoint = useCallback((point: DataPoint) => {\n    setHistory(prev => {\n      const next = [...prev, point];\n      return next.length > MAX_HISTORY ? next.slice(-MAX_HISTORY) : next;\n    });\n  }, []);\n  \n  return { history, addDataPoint };\n}"
+        },
+        "library_recommendations": [
+          {
+            "name": "recharts",
+            "size": "~150kb",
+            "pros": "React-native, declarative",
+            "cons": "Medium size"
+          },
+          {
+            "name": "uplot",
+            "size": "~30kb",
+            "pros": "Very fast, small",
+            "cons": "Less React-like"
+          },
+          {
+            "name": "victory",
+            "size": "~100kb",
+            "pros": "Good React integration",
+            "cons": "Medium size"
+          }
+        ]
+      },
+      "verification": {
+        "pre_checks": [
+          "npm test -- --grep system-monitor",
+          "Check bundle size before adding chart library"
+        ],
+        "commands": [
+          "npx tsc --noEmit",
+          "npm test -- --grep PerformanceGraph",
+          "npm run build",
+          "Check build output size hasn't increased dramatically"
+        ],
+        "success_criteria": [
+          "Performance graphs render smoothly",
+          "History is capped to prevent memory growth",
+          "Charts update in real-time without flicker",
+          "Bundle size increase is acceptable (<100kb)",
+          "Tests pass, TypeScript compiles"
+        ],
+        "manual_test": [
+          "Open system monitor, verify graphs appear",
+          "Watch for 5+ minutes, verify no memory growth",
+          "Resize window, verify charts are responsive",
+          "Check performance tab, verify no excessive CPU use"
+        ]
+      },
+      "architecture": {
+        "module": "system-monitor",
+        "layer": "frontend",
+        "related_modules": [
+          "src-tauri/src/commands/system.rs for data source"
+        ],
+        "data_flow": "System API \u2192 useSystemMonitor \u2192 usePerformanceHistory \u2192 PerformanceGraph"
+      },
+      "intelligence": {
+        "notes": "This is a hard task. Use Plan Mode to design the approach before coding.",
+        "known_issues": [
+          "Chart libraries can significantly increase bundle size",
+          "Real-time updates can cause performance issues if not optimized"
+        ],
+        "tips": [
+          "Start with a single graph (CPU), add others once working",
+          "Use requestAnimationFrame for smooth updates",
+          "Consider lazy loading the chart library",
+          "Profile memory usage during development"
+        ],
+        "estimated_minutes": 180
+      },
+      "quality_rubric": {
+        "functionality": "Graphs show real-time performance data",
+        "performance": "Smooth 60fps updates, no memory leaks",
+        "code_quality": "Clean separation of data and presentation",
+        "ux": "Responsive, clear labels, good colors"
+      },
+      "rollback": {
+        "if_breaks": "Remove PerformanceGraph import, keep raw stats display",
+        "git_command": "git checkout HEAD -- src/modules/system-monitor/components/"
+      },
+      "dependencies": {
+        "depends_on": [],
+        "blocks": [],
+        "npm_packages": [
+          "Consider: recharts, uplot, or victory"
+        ]
+      }
+    }
+  ],
+  "queue": {
+    "pending": [
+      "TASK-001",
+      "TASK-002",
+      "TASK-003",
+      "TASK-004",
+      "TASK-005"
+    ],
+    "in_progress": [],
+    "completed": [
+      "TASK-000"
+    ],
+    "failed": []
+  },
+  "completion_log": [],
+  "iteration_strategy": {
+    "description": "What each iteration focuses on",
+    "iteration_1": {
+      "name": "Make It Work",
+      "focus": "Core functionality, happy path only",
+      "skip": "Edge cases, polish, optimization"
+    },
+    "iteration_2": {
+      "name": "Make It Right",
+      "focus": "Edge cases, error handling, code quality",
+      "skip": "Performance optimization"
+    },
+    "iteration_3": {
+      "name": "Make It Fast",
+      "focus": "Performance, optimization, polish",
+      "skip": "Nothing - final pass"
+    }
+  }
+}
