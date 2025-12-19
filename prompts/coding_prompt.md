@@ -14,8 +14,8 @@ pwd
 # 2. List files to understand project structure
 ls -la
 
-# 3. Read the feature list to see current task
-cat feature_list.json | head -100
+# 3. Read the task list to see current task
+cat tasks/general.json | head -100
 
 # 4. Check recent git history
 git log --oneline -10
@@ -23,7 +23,7 @@ git log --oneline -10
 
 ### STEP 2: FIND YOUR CURRENT TASK
 
-Look at feature_list.json and find the task with status "in_progress" or the first "pending" task.
+Look at tasks/general.json and find the task with status "in_progress" or the first "pending" task.
 
 Read the task details carefully:
 - `description.problem` - What you're fixing
@@ -67,7 +67,7 @@ git commit -m "Fix: [task title]
 
 ### STEP 7: UPDATE TASK STATUS
 
-Update feature_list.json to mark the task as "completed" in the queue section.
+Update tasks/general.json to mark the task as "completed" in the queue section.
 
 ---
 

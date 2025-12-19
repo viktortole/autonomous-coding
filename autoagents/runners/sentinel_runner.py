@@ -45,16 +45,13 @@ from autoagents.lib.logging_utils import create_session_log, log_iteration, log_
 from autoagents.agents.emojis import SENTINEL_EMOJI
 from autoagents.agents.sentinel.health_monitors import HealthMonitor, HealthStatus
 from autoagents.agents.sentinel.repair_workflows import RepairWorkflow
+from autoagents.lib.workspace import resolve_workspace, WorkspacePaths
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-SCRIPT_DIR = Path(__file__).parent.parent.parent  # autonomous-coding/
-SENTINEL_TASKS = SCRIPT_DIR / "tasks" / "sentinel.json"
-SENTINEL_TASKS_FALLBACK = SCRIPT_DIR / "sentinel_tasks.json"  # Legacy location
-LOGS_DIR = SCRIPT_DIR / "logs" / "sentinel"
 CONTROL_STATION = Path("C:/Users/ToleV/Desktop/TestingFolder/control-station")
 COMMS_MD = CONTROL_STATION / ".claude" / "COMMS.md"
 
@@ -140,14 +137,13 @@ def log_to_comms(event_type: str, details: dict):
 # TASK MANAGEMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def load_tasks() -> dict:
-    """Load sentinel_tasks.json configuration."""
-    tasks_file = SENTINEL_TASKS if SENTINEL_TASKS.exists() else SENTINEL_TASKS_FALLBACK
+def load_tasks(tasks_file: Path) -> dict:
+    """Load sentinel task configuration."""
     try:
         with open(tasks_file, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        print_error(f"Failed to load sentinel_tasks.json: {e}")
+        print_error(f"Failed to load sentinel tasks: {e}")
         return {"tasks": [], "project": {}}
 
 
@@ -288,10 +284,10 @@ def print_cycle_header(cycle: int, max_iterations: int, task_id: str, task_title
 """)
 
 
-async def monitoring_loop(args):
+async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
     """Main monitoring loop - REAL Claude AI execution pattern."""
     state = SentinelState()
-    tasks_config = load_tasks()
+    tasks_config = load_tasks(tasks_file)
 
     health_tasks = get_health_tasks(tasks_config)
     project_info = tasks_config.get("project", {"root": str(CONTROL_STATION)})
@@ -319,9 +315,10 @@ async def monitoring_loop(args):
     })
 
     # Create log file
-    LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    logs_dir = workspace.logs_dir / "sentinel"
+    logs_dir.mkdir(parents=True, exist_ok=True)
     log_file = create_session_log(
-        LOGS_DIR, "SENTINEL", SENTINEL_CONFIG["name"], SENTINEL_CONFIG["model"],
+        logs_dir, "SENTINEL", SENTINEL_CONFIG["name"], SENTINEL_CONFIG["model"],
         extra_info={"Max Iterations": max_iterations}
     )
     print(f"  {Style.DIM}📝 Log file: {log_file.name}{Style.RESET}\n")
@@ -471,6 +468,7 @@ Examples:
     parser.add_argument("--continuous", action="store_true", help="Run forever")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be done")
     parser.add_argument("--list", action="store_true", help="List health tasks")
+    parser.add_argument("--workspace", type=str, help="Workspace root (tasks/logs live here)")
     return parser.parse_args()
 
 
@@ -478,22 +476,22 @@ def main():
     """Main entry point."""
     setup_windows_utf8()
     args = parse_args()
-
-    LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    workspace = resolve_workspace(args.workspace)
 
     print_sentinel_banner()
 
     if args.list:
-        tasks_config = load_tasks()
+        tasks_file = workspace.tasks_dir / "sentinel.json"
+        tasks_config = load_tasks(tasks_file)
         health_tasks = get_health_tasks(tasks_config)
         print(f"\n{Style.CYAN}Health Tasks ({len(health_tasks)}):{Style.RESET}")
         for task in health_tasks[:10]:
             print(f"  - {task['id']}: {task['title'][:60]}")
         return
 
-    tasks_file = SENTINEL_TASKS if SENTINEL_TASKS.exists() else SENTINEL_TASKS_FALLBACK
+    tasks_file = workspace.tasks_dir / "sentinel.json"
     if not tasks_file.exists():
-        print_error(f"sentinel_tasks.json not found")
+        print_error("Sentinel tasks file not found")
         sys.exit(1)
 
     if not CONTROL_STATION.exists():
@@ -509,7 +507,7 @@ def main():
         return
 
     try:
-        asyncio.run(monitoring_loop(args))
+        asyncio.run(monitoring_loop(args, workspace, tasks_file))
     except KeyboardInterrupt:
         print(f"\n\n{SENTINEL_EMOJI['shield']} SENTINEL-DEV interrupted by user.")
     except Exception as e:

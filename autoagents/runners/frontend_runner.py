@@ -41,17 +41,13 @@ from autoagents.lib.client import create_agent_client
 from autoagents.lib.streaming import stream_agent_response
 from autoagents.lib.logging_utils import create_session_log, log_iteration, log_completion
 from autoagents.agents.emojis import FRONTEND_EMOJI, TOOL_EMOJI
+from autoagents.lib.workspace import resolve_workspace, WorkspacePaths
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-SCRIPT_DIR = Path(__file__).parent.parent.parent  # autonomous-coding/
-FRONTEND_TASKS = SCRIPT_DIR / "tasks" / "frontend.json"
-FRONTEND_TASKS_FALLBACK = SCRIPT_DIR / "frontend_tasks.json"  # Legacy location
-LOGS_DIR = SCRIPT_DIR / "logs" / "frontend"
-SCREENSHOTS_DIR = SCRIPT_DIR / "screenshots" / "frontend"
 CONTROL_STATION = Path("C:/Users/ToleV/Desktop/TestingFolder/control-station")
 
 MODULES = {
@@ -94,12 +90,16 @@ class FrontendState:
 # SCREENSHOT CAPTURE (Frontend-specific feature)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def capture_tauri_window_screenshot(window_title: str = "Control Station") -> Optional[Path]:
+def capture_tauri_window_screenshot(
+    workspace: WorkspacePaths,
+    window_title: str = "Control Station",
+) -> Optional[Path]:
     """Capture a screenshot of the Tauri app window using PowerShell."""
-    SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+    screenshots_dir = workspace.screenshots_dir / "frontend"
+    screenshots_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    screenshot_path = SCREENSHOTS_DIR / f"dashboard_{timestamp}.png"
+    screenshot_path = screenshots_dir / f"dashboard_{timestamp}.png"
 
     ps_script = f'''
 Add-Type -AssemblyName System.Windows.Forms
@@ -177,9 +177,8 @@ Write-Host "SUCCESS"
 # TASK MANAGEMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def load_tasks() -> dict:
+def load_tasks(tasks_file: Path) -> dict:
     """Load frontend tasks from JSON."""
-    tasks_file = FRONTEND_TASKS if FRONTEND_TASKS.exists() else FRONTEND_TASKS_FALLBACK
     try:
         with open(tasks_file, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -188,9 +187,8 @@ def load_tasks() -> dict:
         return {"tasks": [], "queue": {"pending": []}}
 
 
-def save_tasks(tasks_config: dict):
+def save_tasks(tasks_config: dict, tasks_file: Path):
     """Save frontend tasks."""
-    tasks_file = FRONTEND_TASKS if FRONTEND_TASKS.exists() else FRONTEND_TASKS_FALLBACK
     try:
         with open(tasks_file, "w", encoding="utf-8") as f:
             json.dump(tasks_config, f, indent=2)
@@ -218,7 +216,7 @@ def get_task_by_id(tasks_config: dict, task_id: str) -> Optional[dict]:
     return next((t for t in all_tasks if t["id"] == task_id), None)
 
 
-def mark_task_status(tasks_config: dict, task_id: str, status: str):
+def mark_task_status(tasks_config: dict, task_id: str, status: str, tasks_file: Path):
     """Update task status in queue."""
     queue = tasks_config.get("queue", {})
 
@@ -236,7 +234,7 @@ def mark_task_status(tasks_config: dict, task_id: str, status: str):
             break
 
     tasks_config["queue"] = queue
-    save_tasks(tasks_config)
+    save_tasks(tasks_config, tasks_file)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -364,12 +362,12 @@ def print_iteration_header(iteration: int, max_iterations: int, module: str, tas
 """)
 
 
-async def frontend_loop(args):
+async def frontend_loop(args, workspace: WorkspacePaths, tasks_file: Path):
     """Main frontend development loop."""
     state = FrontendState()
     state.current_module = args.module
 
-    tasks_config = load_tasks()
+    tasks_config = load_tasks(tasks_file)
     max_iterations = -1 if args.continuous else args.iterations
 
     # Reset token usage if new day
@@ -384,9 +382,10 @@ async def frontend_loop(args):
     print()
 
     # Create log file
-    LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    logs_dir = workspace.logs_dir / "frontend"
+    logs_dir.mkdir(parents=True, exist_ok=True)
     log_file = create_session_log(
-        LOGS_DIR, "FRONTEND", FRONTEND_CONFIG["name"], FRONTEND_CONFIG["model"],
+        logs_dir, "FRONTEND", FRONTEND_CONFIG["name"], FRONTEND_CONFIG["model"],
         extra_info={"Module": args.module}
     )
     print(f"  {Style.DIM}📝 Log file: {log_file.name}{Style.RESET}\n")
@@ -436,13 +435,13 @@ async def frontend_loop(args):
             screenshot_path = None
             if args.screenshot or args.visual_review:
                 print(f"\n  {FRONTEND_EMOJI['camera']} {Style.CYAN}Capturing dashboard screenshot...{Style.RESET}")
-                screenshot_path = capture_tauri_window_screenshot("Control Station")
+                screenshot_path = capture_tauri_window_screenshot(workspace, "Control Station")
                 if screenshot_path:
                     print_success(f"Screenshot saved: {screenshot_path.name}")
 
             # Mark task in progress
             if current_task["id"] in tasks_config.get("queue", {}).get("pending", []):
-                mark_task_status(tasks_config, current_task["id"], "in_progress")
+                mark_task_status(tasks_config, current_task["id"], "in_progress", tasks_file)
 
             # Build prompt
             prompt = build_task_prompt(current_task, args.module)
@@ -490,7 +489,7 @@ Continue improving the {args.module.upper()} module.
                 if ai_status == "complete":
                     print_success(f"Iteration {iteration} complete")
                     if not current_task["id"].startswith("EXPLORE-"):
-                        mark_task_status(tasks_config, current_task["id"], "completed")
+                        mark_task_status(tasks_config, current_task["id"], "completed", tasks_file)
                         state.tasks_completed += 1
                 else:
                     print_warning(f"Iteration {iteration} had issues")
@@ -547,6 +546,7 @@ Examples:
     parser.add_argument("--visual-review", action="store_true", help="Start with visual review")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be done")
     parser.add_argument("--list", action="store_true", help="List pending tasks")
+    parser.add_argument("--workspace", type=str, help="Workspace root (tasks/logs live here)")
     return parser.parse_args()
 
 
@@ -554,13 +554,13 @@ def main():
     """Main entry point."""
     setup_windows_utf8()
     args = parse_args()
-
-    LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    workspace = resolve_workspace(args.workspace)
 
     print_frontend_banner()
 
     if args.list:
-        tasks_config = load_tasks()
+        tasks_file = workspace.tasks_dir / "frontend.json"
+        tasks_config = load_tasks(tasks_file)
         pending = tasks_config.get("queue", {}).get("pending", [])
         all_tasks = tasks_config.get("tasks", [])
         print(f"\n{Style.CYAN}Pending Tasks ({len(pending)}):{Style.RESET}")
@@ -570,9 +570,9 @@ def main():
                 print(f"  - {task['id']}: {task['title'][:60]}")
         return
 
-    tasks_file = FRONTEND_TASKS if FRONTEND_TASKS.exists() else FRONTEND_TASKS_FALLBACK
+    tasks_file = workspace.tasks_dir / "frontend.json"
     if not tasks_file.exists():
-        print_warning("No tasks file found - will use exploration mode")
+        print_warning("Frontend tasks file not found - will use exploration mode")
 
     if not CONTROL_STATION.exists():
         print_error(f"Control Station not found at {CONTROL_STATION}")
@@ -587,7 +587,7 @@ def main():
         return
 
     try:
-        asyncio.run(frontend_loop(args))
+        asyncio.run(frontend_loop(args, workspace, tasks_file))
     except KeyboardInterrupt:
         print(f"\n\n{FRONTEND_EMOJI['palette']} CONFIG-FRONTEND interrupted by user.")
     except Exception as e:

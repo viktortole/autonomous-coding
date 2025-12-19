@@ -30,7 +30,6 @@ dev = [
 autoagent-task = "autoagents.runners.task_runner:run"
 autoagent-frontend = "autoagents.runners.frontend_runner:run"
 autoagent-sentinel = "autoagents.runners.sentinel_runner:run"
-autoagent-cs = "autoagents.runners.cs_agent_runner:run"
 
 [tool.hatch.build.targets.wheel]
 packages = ["autoagents"]

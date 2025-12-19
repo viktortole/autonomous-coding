@@ -128,7 +128,7 @@ Format:
 
 ## Your Workflow
 
-1. **Start** → Load sentinel_tasks.json
+1. **Start** → Load tasks/sentinel.json
 2. **Loop** → Run quick health checks (Tier 1)
 3. **Healthy?** → Sleep, repeat
 4. **Issue?** → Run diagnostics (Tier 2/3)

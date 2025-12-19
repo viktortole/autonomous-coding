@@ -1,0 +1,1627 @@
+{
+  "_schema": {
+    "version": "4.0.0",
+    "name": "SENTINEL-DEV Autonomous Guardian System",
+    "description": "BRUTALLY HONEST dev environment health monitoring with visual verification",
+    "created": "2025-12-19",
+    "author": "SENTINEL-DEV",
+    "philosophy": "Act like a real human: look at screenshots, verify visually, be brutally honest, never assume - CHECK!"
+  },
+
+  "ultrathink_protocol": {
+    "mode": "ULTRATHINK",
+    "rules": [
+      "⚠️ Let's be fucking real. DO NOT restrain. DO NOT hold back.",
+      "Think HARD and activate ULTRATHINK for ALL checks",
+      "Be your own supervisor, be your own critique, be BRUTALLY HONEST",
+      "Never trust assumptions - VERIFY EVERYTHING",
+      "Take screenshots and LOOK at them like a real human would",
+      "If something looks wrong, it IS wrong until proven otherwise",
+      "No bullshit code, no fake results, no placeholder checks",
+      "Double-check everything before marking as healthy"
+    ],
+    "brutal_honesty": {
+      "enabled": true,
+      "behavior": [
+        "Report issues even if they seem minor",
+        "Don't hide failures to make things look good",
+        "Call out any suspicious behavior",
+        "Question everything that doesn't look 100% right",
+        "If unsure, investigate deeper instead of assuming OK"
+      ]
+    },
+    "visual_verification": {
+      "required": true,
+      "method": "Take screenshots using MCP Puppeteer or system screenshots",
+      "idle_check_frequency": "Every 5 minutes - take a screenshot and LOOK at it",
+      "what_to_check": [
+        "Splash screen actually displays (not 404)",
+        "Dashboard loads with real data",
+        "All modules render correctly",
+        "No console errors visible",
+        "UI matches expected design"
+      ],
+      "CRITICAL_WINDOW_CHECKS": {
+        "description": "ALWAYS CHECK THESE - basic desktop app functionality",
+        "checks": [
+          "Window controls visible: minimize (─), maximize (□), close (✕)",
+          "Windows can be dragged by title bar",
+          "Windows can be resized (if resizable=true)",
+          "Content NOT cut off at edges",
+          "All buttons and UI elements fully visible",
+          "Window opens at correct size (not too small)",
+          "Window centered on screen",
+          "No horizontal scrollbars when there shouldn't be",
+          "Text is readable (not clipped)",
+          "Dark theme applied correctly"
+        ],
+        "common_issues": [
+          "Title bar missing (decorations: false incorrectly set)",
+          "Window too small - content cut off",
+          "Cannot close window - close button missing or broken",
+          "Cannot resize - even though resizable: true",
+          "Window opens off-screen on multi-monitor setups",
+          "Buttons cut off at window edges",
+          "JARVIS greeting generated but audio NOT playing (TTS not initialized or splash is static HTML without Tauri API)",
+          "JAMES voice assistant not responding to voice commands during app startup",
+          "Splash screen content cut off at bottom - greeting box or buttons not visible (check window height in tauri.conf.json)",
+          "TTS audio playback failing - Windows SAPI not initialized or no voices installed",
+          "Neural TTS (edge-tts) not working - Python/edge-tts not installed or API unreachable",
+          "JARVIS AI connection failing - Ollama not running or wrong model configured",
+          "Splash screen uses static HTML - cannot use Tauri TTS commands (invoke not available)",
+          "Voice settings not persisting - localStorage not synced with Tauri backend",
+          "Audio device not available or muted at OS level",
+          "JAMES vision/screenshot capture failing - Windows GDI permissions or admin required",
+          "Splash screen has NO close button (decorations: false) - user trapped if splash gets stuck",
+          "Splash screen should auto-close but may get stuck at 'Ready!' if window show logic fails",
+          "Voice Output Step 3/5 in JAMES Setup Wizard - Test Voice button not producing audio (neural TTS requires edge-tts Python package)",
+          "Standard TTS mode requires Windows SAPI voices - check Settings > Time & Language > Speech",
+          "Neural TTS mode requires: pip install edge-tts"
+        ]
+      }
+    }
+  },
+
+  "pc_environment": {
+    "user": "ToleV",
+    "platform": "Windows 11 (MINGW64_NT-10.0-26200)",
+    "machine": "TOLESPC",
+    "shell": "Git Bash / PowerShell",
+    "paths": {
+      "home": "C:/Users/ToleV",
+      "desktop": "C:/Users/ToleV/Desktop",
+      "testing_folder": "C:/Users/ToleV/Desktop/TestingFolder",
+      "control_station": "C:/Users/ToleV/Desktop/TestingFolder/control-station",
+      "autonomous_coding": "C:/Users/ToleV/Desktop/TestingFolder/autonomous-coding",
+      "claude_config": "C:/Users/ToleV/.claude",
+      "appdata": "C:/Users/ToleV/AppData/Roaming",
+      "localappdata": "C:/Users/ToleV/AppData/Local"
+    },
+    "critical_directories": {
+      "project_root": "C:/Users/ToleV/Desktop/TestingFolder/control-station",
+      "src": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src",
+      "modules": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules",
+      "tauri_backend": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri",
+      "tauri_src": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src",
+      "public": "C:/Users/ToleV/Desktop/TestingFolder/control-station/public",
+      "out": "C:/Users/ToleV/Desktop/TestingFolder/control-station/out",
+      "next_cache": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.next",
+      "claude_memory": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude",
+      "database_dir": "C:/Users/ToleV/AppData/Roaming/com.convergence.control-station",
+      "webview_cache": "C:/Users/ToleV/AppData/Local/com.convergence.control-station/EBWebView"
+    }
+  },
+
+  "project": {
+    "name": "Control Station",
+    "description": "Modular AI-Powered Personal Operating System - desktop app combining productivity management, activity tracking, AI assistance, and system monitoring",
+    "version": "2.0.0",
+    "status": "Active Development (~70% complete)",
+    "origins": "Built from 4 previous projects: Focus Guardian Python, control-station React, v04.4 OS, Tauri v3",
+    "root": "C:/Users/ToleV/Desktop/TestingFolder/control-station",
+    "identifier": "com.convergence.control-station",
+
+    "stack": {
+      "frontend": {
+        "framework": "Next.js 16.0.5",
+        "ui": "React 19.2.0",
+        "language": "TypeScript 5",
+        "styling": "Tailwind CSS 4",
+        "components": "shadcn/ui (25+ components)",
+        "bundler": "Turbopack (dev), Next.js export (prod)"
+      },
+      "desktop": {
+        "framework": "Tauri 2.9.2",
+        "backend_lang": "Rust 1.77.2",
+        "http_server": "Axum 0.7",
+        "database": "SQLite (r2d2 pool, WAL mode)"
+      },
+      "testing": {
+        "framework": "Vitest 4.0.15",
+        "total_tests": 1192,
+        "passing": 1177,
+        "failing": 3,
+        "skipped": 12
+      }
+    },
+
+    "architecture": {
+      "frontend_pattern": "src/modules/* - Feature modules with components, hooks, services",
+      "backend_pattern": "src-tauri/src/* - Rust backend with Axum HTTP + Tauri commands",
+      "shared_pattern": "src/shared/* - Shared services (database, audio, logger)",
+      "module_count": 13,
+      "module_structure": {
+        "components": "React UI components",
+        "hooks": "State + business logic",
+        "services": "Database operations, utilities",
+        "types": "TypeScript interfaces",
+        "tests": "__tests__/ colocated"
+      }
+    },
+
+    "modules": {
+      "alarm": { "status": "100% ✅", "tests": 660, "notes": "Gold standard, never modify" },
+      "roadmap": { "status": "90% ✅", "tests": 50, "notes": "Working SQLite CRUD" },
+      "focus-guardian": { "status": "65% 🔄", "priority": "#2", "notes": "Activity tracking" },
+      "james": { "status": "50% 🔄", "priority": "#1", "notes": "Screenshot capture, needs TTS" },
+      "jarvis-ai": { "status": "50% 🔄", "notes": "AI providers + agents" },
+      "dashboard": { "status": "90%", "notes": "UI complete, mock data" },
+      "system-monitor": { "status": "80%", "notes": "UI complete, mock metrics" },
+      "device-control": { "status": "80%", "notes": "UI complete, mock devices" },
+      "alerts-panel": { "status": "75%", "notes": "Working with localStorage" },
+      "activity-log": { "status": "70%", "notes": "UI complete, mock data" },
+      "module-browser": { "status": "60%", "notes": "Marketplace UI" },
+      "notes": { "status": "30%", "notes": "Template only" },
+      "module-manager": { "status": "20%", "notes": "Structure only" }
+    },
+
+    "dev_server": {
+      "url": "http://127.0.0.1:3000",
+      "port": 3000,
+      "startup_command": "npm run dev",
+      "launcher_script": "scripts/tauri-dev-live.ps1",
+      "startup_time_seconds": 8,
+      "turbopack": true
+    },
+
+    "tauri_app": {
+      "process_name": "control-station.exe",
+      "config": "src-tauri/tauri.conf.json",
+      "windows": {
+        "splash": { "label": "splash", "url": "splash.html", "size": "480x340" },
+        "main": { "label": "main", "url": "http://localhost:3000", "size": "1400x900" },
+        "focus_widget": { "label": "focus-widget", "url": "http://localhost:3000/widget", "size": "320x180" }
+      },
+      "startup_flow": [
+        "1. Tauri launches → Splash window shows immediately",
+        "2. beforeDevCommand runs → Next.js dev server starts",
+        "3. tauri-dev-live.ps1 waits for HTTP 200 on localhost:3000",
+        "4. React app mounts → Emits app-ready event",
+        "5. Splash JS listens for app-ready → Shows main window, closes splash"
+      ]
+    },
+
+    "database": {
+      "type": "SQLite",
+      "mode": "WAL",
+      "schema_version": 10,
+      "prod_path": "C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/control-station.db",
+      "dev_path": "C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/control-station.dev.db",
+      "tables": [
+        "alarms", "alarm_history", "alarm_templates",
+        "roadmap_task_progress", "roadmap_phase_progress",
+        "focus_sessions", "activity_log", "activity_stats", "app_usage",
+        "classification_rules", "daily_activity_goals",
+        "diagrams", "diagram_projects",
+        "component_approvals", "user_settings",
+        "activity_categories", "james_categorization_queue"
+      ]
+    },
+
+    "http_api": {
+      "framework": "Axum",
+      "default_port": 3738,
+      "endpoints": [
+        "GET /health",
+        "GET /api/activity/current",
+        "GET /api/activity/stream (SSE)",
+        "GET /api/focus/sessions",
+        "POST /api/focus/sessions",
+        "GET /api/stats/*"
+      ]
+    }
+  },
+
+  "critical_files": {
+    "entry_points": {
+      "package_json": "C:/Users/ToleV/Desktop/TestingFolder/control-station/package.json",
+      "next_config": "C:/Users/ToleV/Desktop/TestingFolder/control-station/next.config.ts",
+      "tauri_config": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json",
+      "tsconfig": "C:/Users/ToleV/Desktop/TestingFolder/control-station/tsconfig.json",
+      "vitest_config": "C:/Users/ToleV/Desktop/TestingFolder/control-station/vitest.config.ts"
+    },
+    "frontend": {
+      "app_layout": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/app/layout.tsx",
+      "app_page": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/app/page.tsx",
+      "tauri_ready": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/components/tauri-app-ready.tsx",
+      "module_index": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/index.ts"
+    },
+    "backend": {
+      "lib_rs": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/lib.rs",
+      "main_rs": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/main.rs",
+      "api_server": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/api/server.rs",
+      "alarm_service": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/alarm_service.rs",
+      "james_service": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/james_service.rs",
+      "tts_service": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/tts_service.rs",
+      "agent_manager": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/src/agent_manager.rs"
+    },
+    "voice_and_ai": {
+      "voice_service_ts": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/shared/services/voice.ts",
+      "jarvis_hook": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/jarvis-ai/hooks/useJARVIS.ts",
+      "jarvis_settings": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/jarvis-ai/components/JARVISSettings.tsx",
+      "james_hook": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/core/useJames.ts",
+      "james_voice_settings_ts": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/core/voice-settings.ts",
+      "james_voice_settings_ui": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/VoiceSettings.tsx",
+      "james_control_panel": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/JamesControlPanel.tsx",
+      "ollama_provider": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/jarvis-ai/providers/ollama-provider.ts"
+    },
+    "james_setup_wizard": {
+      "_note": "VISUALLY AMAZING 5-step wizard for JAMES setup - DOCUMENT AND PRESERVE!",
+      "main_wizard": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/SetupWizard.tsx",
+      "step1_welcome": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/wizard/WelcomeStep.tsx",
+      "step2_ai_provider": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/wizard/AIProviderStep.tsx",
+      "step3_voice_output": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/wizard/VoiceStep.tsx",
+      "step4_vision": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/wizard/VisionStep.tsx",
+      "step5_preferences": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/modules/james/components/wizard/PreferencesStep.tsx"
+    },
+    "services": {
+      "database": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/shared/services/database.ts",
+      "health_check": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/shared/services/health-check.ts",
+      "logger": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/shared/services/logger.ts",
+      "tauri_service": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src/shared/services/tauri.ts"
+    },
+    "splash": {
+      "splash_html": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/splash.html",
+      "splash_public": "C:/Users/ToleV/Desktop/TestingFolder/control-station/public/splash.html"
+    },
+    "scripts": {
+      "dev_launcher": "C:/Users/ToleV/Desktop/TestingFolder/control-station/scripts/tauri-dev-live.ps1",
+      "health_check": "C:/Users/ToleV/Desktop/TestingFolder/control-station/scripts/healthcheck.mjs",
+      "dev_if_needed": "C:/Users/ToleV/Desktop/TestingFolder/control-station/scripts/dev-if-needed.mjs"
+    },
+    "documentation": {
+      "claude_md": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude/CLAUDE.md",
+      "comms_md": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude/COMMS.md",
+      "status_md": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude/context/STATUS.md",
+      "technical_ref": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude/knowledge/TECHNICAL_REFERENCE.md",
+      "project_vision": "C:/Users/ToleV/Desktop/TestingFolder/control-station/.claude/knowledge/PROJECT_VISION.md"
+    }
+  },
+
+  "commands": {
+    "dev": {
+      "command": "npm run dev",
+      "description": "Start Next.js dev server with Turbopack on port 3000",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "build": {
+      "command": "npm run build",
+      "description": "Production build (~27s)",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "test": {
+      "command": "npm test",
+      "description": "Run 1192 tests (expect 1177 pass, 3 fail, 12 skip)",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "typecheck": {
+      "command": "npx tsc --noEmit",
+      "description": "TypeScript type check (should be 0 errors)",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "lint": {
+      "command": "npm run lint",
+      "description": "ESLint check",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "tauri_dev": {
+      "command": "npm run tauri:dev",
+      "description": "Launch desktop app in dev mode",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    },
+    "tauri_build": {
+      "command": "npm run tauri:build",
+      "description": "Build production desktop app",
+      "working_dir": "C:/Users/ToleV/Desktop/TestingFolder/control-station"
+    }
+  },
+
+  "agents": {
+    "SENTINEL": {
+      "id": "SENTINEL",
+      "name": "SENTINEL-DEV",
+      "version": "1.0.0",
+      "model": "claude-sonnet-4-20250514",
+      "role": "DevOps Guardian & Auto-Repair",
+      "mode": "ULTRATHINK",
+      "emoji": "🛡️",
+      "color": "RED",
+      "personality": "Vigilant, proactive, BRUTALLY HONEST, fixes issues before escalation",
+      "expertise": [
+        "Server Health Monitoring",
+        "Build Pipeline Diagnosis",
+        "Database Integrity",
+        "Process Management",
+        "Log Analysis",
+        "Automated Recovery",
+        "Visual Verification",
+        "Screenshot Analysis"
+      ],
+      "behavior": {
+        "act_like_human": true,
+        "take_screenshots": true,
+        "verify_visually": true,
+        "brutal_honesty": true,
+        "never_assume": true,
+        "investigate_suspicious": true
+      }
+    }
+  },
+
+  "sentinel_protocol": {
+    "token_budget": {
+      "daily_limit": 10000,
+      "per_iteration": 2000,
+      "max_iterations": 5,
+      "quick_check": 0,
+      "visual_check": 500,
+      "deep_check": 1500,
+      "repair": 2000
+    },
+    "rate_limits": {
+      "max_repairs_per_hour": 5,
+      "max_restarts_per_day": 10,
+      "consecutive_failures_before_escalation": 3
+    },
+    "safety": {
+      "forbidden_actions": [
+        "git reset --hard",
+        "rm -rf node_modules",
+        "npm install",
+        "Database schema changes",
+        "Delete source files",
+        "Modify .git directory",
+        "Touch src/modules/alarm/** (gold standard)"
+      ],
+      "requires_approval": [
+        "TypeScript code changes",
+        "Kill non-CS processes",
+        "Database writes",
+        "File deletions"
+      ]
+    }
+  },
+
+  "tasks": [
+    {
+      "id": "SENTINEL-VISUAL-001",
+      "title": "Visual Verification: Splash Screen Check",
+      "category": "visual-verification",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Previous 404 splash screen issue may recur if splash.html not in correct location",
+        "goal": "VISUALLY verify splash screen displays correctly - not 404",
+        "scope": "Take screenshot of splash window, verify it shows Control Station loading UI",
+        "user_impact": "User sees broken 404 instead of beautiful splash screen"
+      },
+      "visual_verification": {
+        "required": true,
+        "what_to_look_for": [
+          "Control Station logo visible",
+          "Loading progress bar present",
+          "JARVIS greeting text visible",
+          "No 404 error message",
+          "Dark theme gradient background"
+        ],
+        "fail_indicators": [
+          "404 This page could not be found",
+          "White/blank screen",
+          "Error messages",
+          "Missing logo"
+        ]
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Verify splash.html exists in public/",
+            "command": "if (Test-Path 'C:/Users/ToleV/Desktop/TestingFolder/control-station/public/splash.html') { 'EXISTS' } else { 'MISSING' }",
+            "expected": "EXISTS"
+          },
+          {
+            "name": "Verify splash.html exists in src-tauri/",
+            "command": "if (Test-Path 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/splash.html') { 'EXISTS' } else { 'MISSING' }",
+            "expected": "EXISTS"
+          },
+          {
+            "name": "Compare file sizes (should match)",
+            "command": "$pub = (Get-Item 'C:/Users/ToleV/Desktop/TestingFolder/control-station/public/splash.html').Length; $src = (Get-Item 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/splash.html').Length; if ($pub -eq $src) { 'MATCH' } else { 'MISMATCH' }",
+            "expected": "MATCH"
+          }
+        ],
+        "success_criteria": [
+          "Both splash.html files exist",
+          "Files are identical (same size)",
+          "Visual check shows proper splash (no 404)"
+        ],
+        "on_failure": {
+          "action": "Copy src-tauri/splash.html to public/splash.html",
+          "repair_command": "Copy-Item 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/splash.html' 'C:/Users/ToleV/Desktop/TestingFolder/control-station/public/splash.html' -Force"
+        }
+      },
+      "intelligence": {
+        "notes": "This was a real bug we fixed. The splash screen showed 404 in dev mode because Next.js couldn't serve splash.html from src-tauri/. We copy it to public/ to fix.",
+        "token_budget": 500
+      }
+    },
+    {
+      "id": "SENTINEL-VISUAL-002",
+      "title": "Visual Verification: Dashboard Loads Correctly",
+      "category": "visual-verification",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Dashboard might show errors, blank content, or broken layout",
+        "goal": "VISUALLY verify dashboard renders with proper layout and content",
+        "scope": "Screenshot the main dashboard page and verify UI elements",
+        "user_impact": "User sees broken dashboard instead of functional UI"
+      },
+      "visual_verification": {
+        "required": true,
+        "what_to_look_for": [
+          "Sidebar navigation visible on left",
+          "Header with Control Station branding",
+          "Main content area with dashboard widgets",
+          "No React error boundaries triggered",
+          "Dark theme applied correctly"
+        ],
+        "fail_indicators": [
+          "Blank white screen",
+          "React error boundary fallback",
+          "Missing sidebar",
+          "Console errors visible"
+        ]
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Check dev server is responding",
+            "command": "curl -f http://127.0.0.1:3000 --max-time 3 --silent --output $null; if ($LASTEXITCODE -eq 0) { 'RESPONDING' } else { 'NOT_RESPONDING' }",
+            "expected": "RESPONDING"
+          },
+          {
+            "name": "Fetch main page HTML",
+            "command": "curl -s http://127.0.0.1:3000 | Select-String -Pattern 'Control Station' -Quiet",
+            "expected": "True"
+          }
+        ],
+        "screenshot_targets": [
+          "http://127.0.0.1:3000 (main dashboard)",
+          "http://127.0.0.1:3000/focus (focus guardian)",
+          "http://127.0.0.1:3000/james (JAMES module)"
+        ]
+      },
+      "intelligence": {
+        "notes": "Use Puppeteer MCP or screenshot tool to capture the dashboard. A real human would LOOK at the screen - SENTINEL should too.",
+        "token_budget": 800
+      }
+    },
+    {
+      "id": "SENTINEL-VISUAL-003",
+      "title": "Visual Verification: Window Controls & Chrome",
+      "category": "visual-verification",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Tauri windows may be missing title bar, window controls (min/max/close), or have incorrect decorations",
+        "goal": "VISUALLY verify all windows have proper window chrome and controls",
+        "scope": "Screenshot each Tauri window and verify window controls are present and functional",
+        "user_impact": "User cannot minimize, maximize, or close windows properly - BASIC DESKTOP APP FUNCTIONALITY BROKEN"
+      },
+      "visual_verification": {
+        "required": true,
+        "what_to_look_for": [
+          "Title bar visible at top of window",
+          "Minimize button (─) present and clickable",
+          "Maximize/Restore button (□) present and clickable",
+          "Close button (✕) present and clickable - usually red on hover",
+          "Window title shows 'Control Station'",
+          "Window icon (if any) displays correctly",
+          "No cut-off or hidden window controls",
+          "Window decorations match Windows 11 style"
+        ],
+        "fail_indicators": [
+          "Missing title bar (decorations: false)",
+          "No minimize button visible",
+          "No maximize button visible",
+          "No close button visible",
+          "Window controls cut off or partially visible",
+          "Clicking close does nothing",
+          "Window appears frameless when it shouldn't be"
+        ],
+        "windows_to_check": {
+          "main": {
+            "label": "main",
+            "expected_decorations": true,
+            "expected_title": "Control Station",
+            "should_have_controls": true
+          },
+          "splash": {
+            "label": "splash",
+            "expected_decorations": true,
+            "expected_title": "Control Station",
+            "should_have_controls": true,
+            "note": "Splash can be closable but user should see the close button"
+          },
+          "focus-widget": {
+            "label": "focus-widget",
+            "expected_decorations": false,
+            "note": "This is intentionally frameless with custom styling"
+          }
+        }
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Check tauri.conf.json window decorations setting",
+            "command": "(Get-Content 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json' | ConvertFrom-Json).app.windows | ForEach-Object { $_.label + ': decorations=' + $_.decorations }",
+            "expected": "main: decorations=True, splash: decorations=True"
+          }
+        ],
+        "screenshot_actions": [
+          "Take screenshot of main window - verify title bar and window controls visible",
+          "Take screenshot of splash window - verify close button works",
+          "Try clicking minimize - verify window minimizes to taskbar",
+          "Try clicking maximize - verify window maximizes to full screen",
+          "Try clicking close - verify window closes (or prompts if unsaved)"
+        ]
+      },
+      "auto_repair": {
+        "if_decorations_false": {
+          "fix": "Set decorations: true in tauri.conf.json for main and splash windows",
+          "requires_restart": true
+        }
+      },
+      "intelligence": {
+        "notes": "THIS IS BASIC DESKTOP APP FUNCTIONALITY. If users can't close the window, the app is broken. ALWAYS check window controls.",
+        "token_budget": 600
+      }
+    },
+    {
+      "id": "SENTINEL-VISUAL-004",
+      "title": "Visual Verification: Window Sizing & Dimensions",
+      "category": "visual-verification",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Windows may be too small, cut off content, or have incorrect dimensions",
+        "goal": "Verify windows have correct size, are not cut off, and content fits properly",
+        "scope": "Check all Tauri window dimensions match tauri.conf.json and content is not clipped",
+        "user_impact": "UI elements cut off, buttons missing, content unreadable"
+      },
+      "visual_verification": {
+        "required": true,
+        "expected_dimensions": {
+          "splash": {
+            "width": 500,
+            "height": 700,
+            "resizable": false,
+            "check": "Window fits all splash content without scrolling"
+          },
+          "main": {
+            "width": 1400,
+            "height": 900,
+            "minWidth": 800,
+            "minHeight": 600,
+            "resizable": true,
+            "check": "Dashboard sidebar and main content both visible"
+          },
+          "focus-widget": {
+            "width": 320,
+            "height": 180,
+            "minWidth": 280,
+            "minHeight": 160,
+            "resizable": true,
+            "check": "Timer display fits without clipping"
+          }
+        },
+        "what_to_look_for": [
+          "All content visible without horizontal scrolling",
+          "Sidebar not cut off on the left",
+          "Buttons and controls not cut off on the right",
+          "Footer/bottom content visible",
+          "Text is readable (not too small)",
+          "Window centered on screen properly",
+          "Multiple monitor support working"
+        ],
+        "fail_indicators": [
+          "Content cut off at edges",
+          "Horizontal scrollbar when there shouldn't be",
+          "Buttons partially visible",
+          "Text clipped mid-word",
+          "Window opens off-screen",
+          "Window too small to show all content"
+        ]
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Verify main window dimensions in config",
+            "command": "$config = Get-Content 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json' | ConvertFrom-Json; $main = $config.app.windows | Where-Object { $_.label -eq 'main' }; \"Width: $($main.width) Height: $($main.height) MinW: $($main.minWidth) MinH: $($main.minHeight)\"",
+            "expected": "Width: 1400 Height: 900 MinW: 800 MinH: 600"
+          },
+          {
+            "name": "Verify splash window dimensions",
+            "command": "$config = Get-Content 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json' | ConvertFrom-Json; $splash = $config.app.windows | Where-Object { $_.label -eq 'splash' }; \"Width: $($splash.width) Height: $($splash.height)\"",
+            "expected": "Width: 500 Height: 700"
+          }
+        ],
+        "screenshot_actions": [
+          "Screenshot main window at default size - verify all content fits",
+          "Resize main window to minimum (800x600) - verify critical content still visible",
+          "Screenshot splash window - verify all stages and greeting box visible",
+          "Check window position - should be centered on primary monitor"
+        ]
+      },
+      "intelligence": {
+        "notes": "Users complained windows are too small or content is cut off. This must be verified VISUALLY not just by checking config values.",
+        "token_budget": 600
+      }
+    },
+    {
+      "id": "SENTINEL-VISUAL-005",
+      "title": "Visual Verification: Window Drag & Resize",
+      "category": "visual-verification",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Windows may not be draggable or resizable when they should be",
+        "goal": "Verify window interactions work: drag to move, resize from edges/corners",
+        "scope": "Test window interactivity for main and splash windows",
+        "user_impact": "User cannot position or resize windows - FRUSTRATING"
+      },
+      "visual_verification": {
+        "required": true,
+        "what_to_test": [
+          "Drag window by title bar - window should move smoothly",
+          "Resize from right edge - width changes",
+          "Resize from bottom edge - height changes",
+          "Resize from corner - both dimensions change",
+          "Double-click title bar - window maximizes/restores",
+          "Snap to screen edges (Windows 11 snap layouts)"
+        ],
+        "expected_behavior": {
+          "main": {
+            "draggable": true,
+            "resizable": true,
+            "snap_enabled": true
+          },
+          "splash": {
+            "draggable": true,
+            "resizable": false,
+            "note": "Splash is fixed size, should not resize"
+          },
+          "focus-widget": {
+            "draggable": true,
+            "resizable": true,
+            "note": "Custom frameless window - drag area might be custom"
+          }
+        },
+        "fail_indicators": [
+          "Cannot drag window by title bar",
+          "Window jumps when dragging",
+          "Cannot resize when resizable=true",
+          "CAN resize when resizable=false",
+          "Resize cursor not shown on edges",
+          "Window snapping not working"
+        ]
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Check resizable settings in config",
+            "command": "(Get-Content 'C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json' | ConvertFrom-Json).app.windows | ForEach-Object { $_.label + ': resizable=' + $_.resizable }",
+            "expected": "main: resizable=True, splash: resizable=False"
+          }
+        ],
+        "manual_test_instructions": [
+          "1. Grab window title bar with mouse",
+          "2. Drag to different position - should move smoothly",
+          "3. Release - window should stay in new position",
+          "4. Hover mouse over window edge - resize cursor should appear (for resizable windows)",
+          "5. Drag edge to resize - window should resize smoothly",
+          "6. Drag to screen edge - Windows snap assist should appear"
+        ]
+      },
+      "intelligence": {
+        "notes": "Basic window management. If drag/resize don't work, something is fundamentally wrong with Tauri window config.",
+        "token_budget": 400
+      }
+    },
+    {
+      "id": "SENTINEL-VISUAL-006",
+      "title": "Visual Verification: Complete App Flow Screenshot Test",
+      "category": "visual-verification",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "hard",
+      "iterations": 1,
+      "description": {
+        "problem": "Need to verify the ENTIRE app flow works visually from splash to dashboard",
+        "goal": "Screenshot every stage of app startup and verify each looks correct",
+        "scope": "Full visual walkthrough: splash -> loading -> dashboard -> modules",
+        "user_impact": "Complete confidence that user will see proper app experience"
+      },
+      "visual_verification": {
+        "required": true,
+        "flow_stages": [
+          {
+            "stage": 1,
+            "name": "Splash Screen Appears",
+            "what_to_see": [
+              "Dark gradient background",
+              "Control Station logo (globe icon)",
+              "Progress stages visible",
+              "JARVIS greeting box",
+              "Window controls (min/max/close) at top"
+            ],
+            "screenshot": "stage1_splash.png"
+          },
+          {
+            "stage": 2,
+            "name": "Splash Progress Updates",
+            "what_to_see": [
+              "Checkmarks appearing next to completed stages",
+              "Progress bar filling",
+              "'Connecting to JARVIS AI' checked",
+              "'Loading application' checked"
+            ],
+            "screenshot": "stage2_progress.png"
+          },
+          {
+            "stage": 3,
+            "name": "Splash Shows Ready",
+            "what_to_see": [
+              "All stages show checkmarks",
+              "Status shows 'Ready!'",
+              "Launch button visible (if manual mode)"
+            ],
+            "screenshot": "stage3_ready.png"
+          },
+          {
+            "stage": 4,
+            "name": "Main Dashboard Loads",
+            "what_to_see": [
+              "Splash window closes",
+              "Main window becomes visible",
+              "Sidebar navigation on left",
+              "Dashboard content in center",
+              "No loading spinners stuck"
+            ],
+            "screenshot": "stage4_dashboard.png"
+          },
+          {
+            "stage": 5,
+            "name": "Dashboard Fully Rendered",
+            "what_to_see": [
+              "All dashboard widgets loaded",
+              "Data displayed (not placeholder)",
+              "No error boundaries",
+              "Dark theme applied",
+              "All icons and images loaded"
+            ],
+            "screenshot": "stage5_complete.png"
+          }
+        ],
+        "fail_indicators": [
+          "Any stage stuck for more than 30 seconds",
+          "White flash between stages",
+          "Error messages at any stage",
+          "Windows overlapping incorrectly",
+          "Dashboard showing but content empty"
+        ]
+      },
+      "execution": {
+        "timing": {
+          "splash_display_max": "5 seconds",
+          "loading_max": "30 seconds",
+          "dashboard_render_max": "10 seconds",
+          "total_startup_max": "45 seconds"
+        },
+        "screenshot_locations": {
+          "output_dir": "C:/Users/ToleV/Desktop/TestingFolder/autonomous-coding/logs/sentinel/screenshots",
+          "naming": "YYYY-MM-DD_HH-MM_stage{N}_{name}.png"
+        }
+      },
+      "intelligence": {
+        "notes": "This is the DEFINITIVE visual test. If all stages pass, the app is working. Take screenshots at each stage and LOOK at them.",
+        "token_budget": 1000
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-001",
+      "title": "Dev Server HTTP Health Check",
+      "category": "health-monitoring",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Dev server may crash, freeze, or stop responding",
+        "goal": "Verify localhost:3000 returns HTTP 200",
+        "scope": "Quick HTTP ping - zero tokens",
+        "user_impact": "Can't develop if server is down"
+      },
+      "execution": {
+        "bash_commands": [
+          "curl -f http://127.0.0.1:3000 --max-time 3 --silent --output $null; if ($LASTEXITCODE -eq 0) { 'HEALTHY' } else { 'UNHEALTHY' }"
+        ],
+        "success_criteria": ["HTTP 200 within 3 seconds"],
+        "failure_indicators": ["Connection refused", "Timeout", "Non-200 status"],
+        "on_failure": {
+          "escalate_to": "SENTINEL-REPAIR-001"
+        }
+      },
+      "intelligence": {
+        "token_budget": 0,
+        "frequency": "every_5_minutes",
+        "notes": "Cheapest check. Pure bash, zero tokens."
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-002",
+      "title": "Port 3000 Status Check",
+      "category": "health-monitoring",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Port conflicts can prevent dev server startup",
+        "goal": "Verify port 3000 is used by node (expected) or available",
+        "scope": "Check TCP connections on port 3000"
+      },
+      "execution": {
+        "bash_commands": [
+          "$conn = Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue; if ($conn) { $proc = Get-Process -Id $conn.OwningProcess -ErrorAction SilentlyContinue; if ($proc.Name -eq 'node') { 'OK_NODE' } else { 'CONFLICT: ' + $proc.Name } } else { 'PORT_FREE' }"
+        ],
+        "success_criteria": ["PORT is used by node or PORT_FREE"],
+        "failure_indicators": ["CONFLICT with non-node process"],
+        "on_failure": {
+          "escalate_to": "SENTINEL-REPAIR-005"
+        }
+      },
+      "intelligence": {
+        "token_budget": 0,
+        "frequency": "every_5_minutes"
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-003",
+      "title": "Database File Health Check",
+      "category": "health-monitoring",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Database file may be missing, locked, or corrupted",
+        "goal": "Verify SQLite database file exists and is accessible",
+        "scope": "Check both prod and dev database files"
+      },
+      "execution": {
+        "bash_commands": [
+          "$devDb = 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/control-station.dev.db'; $prodDb = 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/control-station.db'; $devExists = Test-Path $devDb; $prodExists = Test-Path $prodDb; if ($devExists -and $prodExists) { 'BOTH_EXIST' } elseif ($devExists) { 'DEV_ONLY' } elseif ($prodExists) { 'PROD_ONLY' } else { 'NONE_EXIST' }"
+        ],
+        "success_criteria": ["Database files exist"],
+        "failure_indicators": ["NONE_EXIST"],
+        "on_failure": {
+          "escalate_to": "SENTINEL-DIAG-004"
+        }
+      },
+      "intelligence": {
+        "token_budget": 0,
+        "frequency": "every_10_minutes"
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-004",
+      "title": "TypeScript Compilation Check",
+      "category": "health-monitoring",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "TypeScript errors break the build",
+        "goal": "Run tsc --noEmit and verify 0 errors",
+        "scope": "Full TypeScript type check"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; npx tsc --noEmit 2>&1"
+        ],
+        "success_criteria": ["Exit code 0", "No 'error TS' in output"],
+        "failure_indicators": ["error TS", "Non-zero exit"],
+        "on_failure": {
+          "escalate_to": "SENTINEL-DIAG-003",
+          "action": "Analyze TypeScript errors and determine if auto-fixable"
+        }
+      },
+      "intelligence": {
+        "token_budget": 500,
+        "frequency": "every_30_minutes",
+        "notes": "Cache results - don't re-run if no source changes"
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-005",
+      "title": "Test Suite Health Check",
+      "category": "health-monitoring",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Test failures indicate broken code",
+        "goal": "Run tests and verify expected pass rate (1177/1192)",
+        "scope": "Full Vitest test suite"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; npm test 2>&1 | Select-Object -Last 20"
+        ],
+        "success_criteria": [
+          "1177+ tests passing",
+          "3 or fewer failures (known issues)",
+          "Exit code indicates pass"
+        ],
+        "expected_results": {
+          "total": 1192,
+          "passing": 1177,
+          "failing": 3,
+          "skipped": 12
+        },
+        "known_failures": [
+          "focus-guardian database tests (mock mismatch, not a bug)"
+        ]
+      },
+      "intelligence": {
+        "token_budget": 800,
+        "frequency": "every_hour",
+        "notes": "3 failures are KNOWN and acceptable. More than 3 failures = investigate."
+      }
+    },
+    {
+      "id": "SENTINEL-HEALTH-006",
+      "title": "Build Cache Validity Check",
+      "category": "health-monitoring",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Stale .next cache can cause weird build issues",
+        "goal": "Check if .next directory exists and is recent",
+        "scope": "File system check"
+      },
+      "execution": {
+        "bash_commands": [
+          "$cacheDir = 'C:/Users/ToleV/Desktop/TestingFolder/control-station/.next'; if (Test-Path $cacheDir) { $age = (Get-Date) - (Get-Item $cacheDir).LastWriteTime; if ($age.TotalHours -lt 24) { 'VALID_' + [int]$age.TotalHours + 'h' } else { 'STALE_' + [int]$age.TotalHours + 'h' } } else { 'MISSING' }"
+        ],
+        "success_criteria": ["Cache exists and < 24 hours old"],
+        "on_failure": {
+          "escalate_to": "SENTINEL-REPAIR-003"
+        }
+      },
+      "intelligence": {
+        "token_budget": 0,
+        "frequency": "every_30_minutes"
+      }
+    },
+    {
+      "id": "SENTINEL-REPAIR-001",
+      "title": "Restart Crashed Dev Server",
+      "category": "auto-repair",
+      "priority": "critical",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Dev server crashed or stopped responding",
+        "goal": "Kill existing processes and restart dev server cleanly",
+        "scope": "Full dev server restart sequence"
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Kill processes on port 3000",
+            "command": "Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }",
+            "timeout_seconds": 10
+          },
+          {
+            "name": "Wait for port release",
+            "command": "Start-Sleep -Seconds 2",
+            "timeout_seconds": 5
+          },
+          {
+            "name": "Start dev server via launcher",
+            "command": "Start-Process powershell -ArgumentList '-ExecutionPolicy', 'Bypass', '-File', 'C:/Users/ToleV/Desktop/TestingFolder/control-station/scripts/tauri-dev-live.ps1' -WindowStyle Minimized",
+            "timeout_seconds": 10
+          },
+          {
+            "name": "Wait for HTTP 200",
+            "command": "$timeout = 90; $start = Get-Date; while ((Get-Date) - $start -lt [TimeSpan]::FromSeconds($timeout)) { try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:3000' -TimeoutSec 3 -UseBasicParsing -ErrorAction Stop; if ($r.StatusCode -eq 200) { 'SERVER_READY'; break } } catch { Start-Sleep -Seconds 2 } }; if ((Get-Date) - $start -ge [TimeSpan]::FromSeconds($timeout)) { 'TIMEOUT' }",
+            "timeout_seconds": 100
+          }
+        ],
+        "success_criteria": ["HTTP 200 from localhost:3000"],
+        "visual_verification": {
+          "after_repair": true,
+          "check": "Take screenshot of localhost:3000 to verify dashboard loads"
+        }
+      },
+      "safety": {
+        "max_retries": 2,
+        "requires_approval": false
+      },
+      "intelligence": {
+        "token_budget": 1500,
+        "notes": "Log to COMMS.md before and after repair"
+      }
+    },
+    {
+      "id": "SENTINEL-REPAIR-003",
+      "title": "Clear Build Cache",
+      "category": "auto-repair",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Build cache is stale or corrupted",
+        "goal": "Delete .next directory to force fresh build",
+        "scope": "Safe cache deletion"
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Stop dev server",
+            "command": "Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }",
+            "timeout_seconds": 10
+          },
+          {
+            "name": "Delete .next directory",
+            "command": "Remove-Item -Path 'C:/Users/ToleV/Desktop/TestingFolder/control-station/.next' -Recurse -Force -ErrorAction SilentlyContinue",
+            "timeout_seconds": 30
+          },
+          {
+            "name": "Verify deletion",
+            "command": "if (Test-Path 'C:/Users/ToleV/Desktop/TestingFolder/control-station/.next') { 'FAILED' } else { 'SUCCESS' }",
+            "timeout_seconds": 5
+          }
+        ],
+        "post_repair": "Run SENTINEL-REPAIR-001 to restart dev server"
+      },
+      "safety": {
+        "max_retries": 1,
+        "requires_approval": false,
+        "notes": "Safe - .next is fully regenerated on dev server start"
+      }
+    },
+    {
+      "id": "SENTINEL-REPAIR-004",
+      "title": "Clear Database Lock",
+      "category": "auto-repair",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "SQLite database is locked",
+        "goal": "Clear WAL files to release lock",
+        "scope": "Database recovery"
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Check for WAL files",
+            "command": "Get-ChildItem 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station' -Filter '*.db-wal' | Select-Object Name, Length",
+            "timeout_seconds": 5
+          },
+          {
+            "name": "Delete WAL and SHM files",
+            "command": "Remove-Item 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/*.db-wal' -Force -ErrorAction SilentlyContinue; Remove-Item 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/*.db-shm' -Force -ErrorAction SilentlyContinue; 'CLEARED'",
+            "timeout_seconds": 10
+          },
+          {
+            "name": "Verify database accessible",
+            "command": "if (Test-Path 'C:/Users/ToleV/AppData/Roaming/com.convergence.control-station/control-station.dev.db') { 'DB_OK' } else { 'DB_MISSING' }",
+            "timeout_seconds": 5
+          }
+        ]
+      },
+      "safety": {
+        "max_retries": 3,
+        "requires_approval": false,
+        "caution": "May lose uncommitted transactions (usually none in dev)"
+      }
+    },
+    {
+      "id": "SENTINEL-REPAIR-005",
+      "title": "Resolve Port Conflict",
+      "category": "auto-repair",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Port 3000 occupied by non-node process",
+        "goal": "Identify and safely kill blocking process",
+        "scope": "Port conflict resolution"
+      },
+      "execution": {
+        "steps": [
+          {
+            "name": "Identify process",
+            "command": "$conn = Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue; if ($conn) { $proc = Get-Process -Id $conn.OwningProcess; 'PID: ' + $proc.Id + ', Name: ' + $proc.Name } else { 'PORT_FREE' }",
+            "timeout_seconds": 5
+          },
+          {
+            "name": "Kill if safe process",
+            "command": "$conn = Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue; if ($conn) { $proc = Get-Process -Id $conn.OwningProcess; if ($proc.Name -in @('node', 'npm', 'next-server')) { Stop-Process -Id $proc.Id -Force; 'KILLED' } else { 'REQUIRES_APPROVAL: ' + $proc.Name } } else { 'PORT_FREE' }",
+            "timeout_seconds": 10
+          }
+        ],
+        "safe_to_kill": ["node", "npm", "next-server"],
+        "never_kill": ["System", "svchost", "explorer"]
+      },
+      "safety": {
+        "requires_approval": "conditional"
+      }
+    },
+    {
+      "id": "SENTINEL-DIAG-003",
+      "title": "TypeScript Error Analysis",
+      "category": "diagnostics",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "hard",
+      "iterations": 2,
+      "description": {
+        "problem": "TypeScript compilation failing",
+        "goal": "Analyze errors and determine if auto-fixable",
+        "scope": "Deep TypeScript diagnosis"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; npx tsc --noEmit 2>&1"
+        ],
+        "analysis": {
+          "auto_fixable": [
+            "Missing import",
+            "Simple type mismatch",
+            "Property typo"
+          ],
+          "requires_human": [
+            "Circular dependency",
+            "Complex generics",
+            "Architecture issues",
+            "More than 10 errors"
+          ]
+        }
+      },
+      "intelligence": {
+        "token_budget": 1500,
+        "notes": "If > 10 errors, escalate to human. Don't try to auto-fix complex issues."
+      }
+    },
+    {
+      "id": "SENTINEL-MAINT-001",
+      "title": "Cleanup Old Logs",
+      "category": "maintenance",
+      "priority": "low",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Log files accumulate over time",
+        "goal": "Delete logs older than 7 days",
+        "scope": "autonomous-coding/logs and control-station logs"
+      },
+      "execution": {
+        "bash_commands": [
+          "Get-ChildItem 'C:/Users/ToleV/Desktop/TestingFolder/autonomous-coding/logs' -Recurse -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-7) } | Remove-Item -Force"
+        ]
+      },
+      "intelligence": {
+        "token_budget": 100,
+        "frequency": "daily"
+      }
+    },
+    {
+      "id": "SENTINEL-JARVIS-001",
+      "title": "JARVIS AI Connectivity Check",
+      "category": "ai-verification",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "JARVIS AI may not be connected or responding - Ollama offline, wrong model, API unreachable",
+        "goal": "Verify Ollama is running and gemma2:2b model responds to prompts",
+        "scope": "Test JARVIS AI connectivity and response capability",
+        "user_impact": "User gets no AI assistant functionality if JARVIS is offline"
+      },
+      "execution": {
+        "bash_commands": [
+          "curl -s http://localhost:11434/api/tags | Select-String 'gemma2'",
+          "curl -s -X POST http://localhost:11434/api/generate -d '{\"model\": \"gemma2:2b\", \"prompt\": \"Hello\", \"stream\": false}' --max-time 15"
+        ],
+        "success_criteria": [
+          "Ollama API responds on port 11434",
+          "gemma2:2b model is available",
+          "Model generates response within 15 seconds"
+        ],
+        "failure_indicators": [
+          "Connection refused - Ollama not running",
+          "Model not found - gemma2:2b not pulled",
+          "Timeout - Model too slow or frozen"
+        ],
+        "on_failure": {
+          "action": "Log to COMMS.md and alert user",
+          "suggestion": "Run: ollama serve && ollama pull gemma2:2b"
+        }
+      },
+      "intelligence": {
+        "token_budget": 300,
+        "frequency": "every_15_minutes",
+        "notes": "JARVIS is critical for splash greeting and AI assistance. Must be working!"
+      }
+    },
+    {
+      "id": "SENTINEL-TTS-001",
+      "title": "TTS Voice System Check",
+      "category": "ai-verification",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "TTS/voice output not working - Windows SAPI missing voices, edge-tts not installed, audio device issues",
+        "goal": "Verify Windows SAPI voices available and TTS can speak",
+        "scope": "Test TTS functionality in Tauri backend",
+        "user_impact": "User cannot hear JAMES voice output or JARVIS spoken responses",
+        "limitation": "NOTE: Splash screen is STATIC HTML and CANNOT use TTS - only React app has TTS access"
+      },
+      "execution": {
+        "bash_commands": [
+          "powershell -Command \"Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.GetInstalledVoices() | Where-Object { $_.Enabled } | Select-Object -First 3 @{N='Name';E={$_.VoiceInfo.Name}}, @{N='Culture';E={$_.VoiceInfo.Culture.Name}}\"",
+          "python -m edge_tts --version 2>$null; if ($LASTEXITCODE -eq 0) { 'NEURAL_TTS_OK' } else { 'NEURAL_TTS_MISSING' }"
+        ],
+        "success_criteria": [
+          "At least 1 SAPI voice installed",
+          "Voice has culture/language info",
+          "Optional: edge-tts available for neural voices"
+        ],
+        "failure_indicators": [
+          "No SAPI voices found",
+          "System.Speech assembly not found",
+          "Audio playback errors"
+        ],
+        "fix_suggestions": {
+          "no_voices": "Windows Settings > Time & Language > Speech > Add voices",
+          "neural_tts": "pip install edge-tts"
+        }
+      },
+      "intelligence": {
+        "token_budget": 400,
+        "frequency": "on_demand",
+        "notes": "TTS only works in Tauri runtime, not during splash screen loading"
+      }
+    },
+    {
+      "id": "SENTINEL-JAMES-001",
+      "title": "JAMES Vision Service Check",
+      "category": "ai-verification",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "JAMES vision/screenshot capture may fail - Windows GDI issues, permissions, directory access",
+        "goal": "Verify JAMES can capture screenshots and generate thumbnails",
+        "scope": "Test screenshot capture pipeline",
+        "user_impact": "User cannot use JAMES vision analysis features"
+      },
+      "execution": {
+        "bash_commands": [
+          "$screenshotDir = \"$env:LOCALAPPDATA\\control-station\\james-screenshots\"; if (Test-Path $screenshotDir) { $files = Get-ChildItem $screenshotDir -Filter '*.jpg' | Select-Object -Last 3; if ($files) { 'SCREENSHOTS_EXIST: ' + $files.Count } else { 'DIR_EMPTY' } } else { 'DIR_MISSING' }"
+        ],
+        "success_criteria": [
+          "Screenshot directory exists",
+          "Recent screenshots captured (within 24h)",
+          "Files are valid JPEGs (> 100 bytes)"
+        ],
+        "on_failure": {
+          "escalate_to": "Check james_service.rs Windows GDI capture",
+          "suggestion": "Verify admin permissions for screen capture"
+        }
+      },
+      "intelligence": {
+        "token_budget": 200,
+        "frequency": "every_30_minutes"
+      }
+    },
+    {
+      "id": "SENTINEL-CODE-001",
+      "title": "Untracked Files Monitor",
+      "category": "code-health",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "New files may be created but never committed - lost work, incomplete features",
+        "goal": "Monitor for untracked files that should be committed or cleaned up",
+        "scope": "Git status analysis in control-station repo"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; git status --porcelain | Where-Object { $_ -match '^\\?\\?' } | Select-Object -First 10"
+        ],
+        "success_criteria": [
+          "No critical untracked source files (.ts, .tsx, .rs)",
+          "Acceptable untracked: node_modules, .next, build artifacts"
+        ],
+        "alert_on": [
+          "Untracked .ts or .tsx files",
+          "Untracked .rs files",
+          "Untracked config files"
+        ]
+      },
+      "intelligence": {
+        "token_budget": 200,
+        "frequency": "every_30_minutes",
+        "notes": "Log suspicious untracked files to COMMS.md for human review"
+      }
+    },
+    {
+      "id": "SENTINEL-CODE-002",
+      "title": "Modified Files Monitor",
+      "category": "code-health",
+      "priority": "medium",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "easy",
+      "iterations": 1,
+      "description": {
+        "problem": "Modified files may contain bugs, incomplete code, or leftover debug statements",
+        "goal": "Track modified files and flag suspicious changes",
+        "scope": "Git diff analysis"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; git diff --name-only | Select-Object -First 20"
+        ],
+        "success_criteria": [
+          "Modified files are intentional and expected",
+          "No console.log/debug statements in production code"
+        ],
+        "flag_if_contains": [
+          "console.log",
+          "debugger",
+          "TODO: REMOVE",
+          "FIXME",
+          "XXX"
+        ]
+      },
+      "intelligence": {
+        "token_budget": 300,
+        "frequency": "every_15_minutes"
+      }
+    },
+    {
+      "id": "SENTINEL-POLISH-001",
+      "title": "Code Quality Polish",
+      "category": "code-health",
+      "priority": "low",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "hard",
+      "iterations": 2,
+      "description": {
+        "problem": "Code may have linting errors, unused imports, formatting issues",
+        "goal": "Run ESLint and flag fixable issues",
+        "scope": "Full codebase lint check"
+      },
+      "execution": {
+        "bash_commands": [
+          "cd 'C:/Users/ToleV/Desktop/TestingFolder/control-station'; npm run lint 2>&1 | Select-Object -Last 30"
+        ],
+        "success_criteria": [
+          "Zero lint errors",
+          "Warnings acceptable but logged"
+        ],
+        "auto_fix": {
+          "enabled": false,
+          "command": "npm run lint -- --fix",
+          "caution": "Auto-fix can break code - use with approval"
+        }
+      },
+      "intelligence": {
+        "token_budget": 500,
+        "frequency": "every_hour",
+        "notes": "DO NOT auto-fix without approval. Log issues for human review."
+      }
+    },
+    {
+      "id": "SENTINEL-WINDOW-001",
+      "title": "Window Configuration Audit",
+      "category": "visual-verification",
+      "priority": "high",
+      "status": "pending",
+      "agent": "SENTINEL",
+      "complexity": "medium",
+      "iterations": 1,
+      "description": {
+        "problem": "Tauri windows may be misconfigured - wrong size, missing decorations, cut off content",
+        "goal": "Audit tauri.conf.json window configurations for common issues",
+        "scope": "Check splash, main, and focus-widget window configs"
+      },
+      "execution": {
+        "file_to_check": "C:/Users/ToleV/Desktop/TestingFolder/control-station/src-tauri/tauri.conf.json",
+        "window_rules": {
+          "splash": {
+            "expected_width": 500,
+            "expected_height": 700,
+            "decorations": false,
+            "resizable": false
+          },
+          "main": {
+            "min_width": 800,
+            "min_height": 600,
+            "decorations": true,
+            "resizable": true
+          },
+          "focus-widget": {
+            "decorations": false,
+            "alwaysOnTop": true
+          }
+        }
+      },
+      "intelligence": {
+        "token_budget": 400,
+        "frequency": "on_startup",
+        "notes": "Window misconfiguration causes cut-off UI, missing buttons, chaotic appearance"
+      }
+    }
+  ],
+
+  "queue": {
+    "visual_checks": ["SENTINEL-VISUAL-001", "SENTINEL-VISUAL-002", "SENTINEL-VISUAL-003", "SENTINEL-VISUAL-004", "SENTINEL-VISUAL-005", "SENTINEL-VISUAL-006", "SENTINEL-WINDOW-001"],
+    "quick_checks": ["SENTINEL-HEALTH-001", "SENTINEL-HEALTH-002", "SENTINEL-HEALTH-003"],
+    "scheduled_checks": ["SENTINEL-HEALTH-004", "SENTINEL-HEALTH-005", "SENTINEL-HEALTH-006"],
+    "ai_checks": ["SENTINEL-JARVIS-001", "SENTINEL-TTS-001", "SENTINEL-JAMES-001"],
+    "code_health": ["SENTINEL-CODE-001", "SENTINEL-CODE-002", "SENTINEL-POLISH-001"],
+    "repairs": ["SENTINEL-REPAIR-001", "SENTINEL-REPAIR-003", "SENTINEL-REPAIR-004", "SENTINEL-REPAIR-005"],
+    "diagnostics": ["SENTINEL-DIAG-003"],
+    "maintenance": ["SENTINEL-MAINT-001"]
+  },
+
+  "monitoring_schedule": {
+    "startup": {
+      "run_first": ["SENTINEL-WINDOW-001", "SENTINEL-JARVIS-001", "SENTINEL-HEALTH-001", "SENTINEL-VISUAL-001"],
+      "notes": "On startup: verify window configs, JARVIS connectivity, dev server, then visual splash check"
+    },
+    "idle_mode": {
+      "quick_checks_interval_minutes": 5,
+      "visual_checks_interval_minutes": 30,
+      "scheduled_checks_interval_minutes": 30,
+      "ai_checks_interval_minutes": 15,
+      "code_health_interval_minutes": 30,
+      "maintenance_interval_hours": 24
+    },
+    "alert_mode": {
+      "quick_checks_interval_seconds": 30,
+      "deep_diagnostics": true,
+      "auto_repair": true
+    }
+  },
+
+  "autonomous_behaviors": {
+    "proactive_monitoring": {
+      "enabled": true,
+      "description": "SENTINEL actively monitors without being asked",
+      "actions": [
+        "Watch for file changes and validate immediately",
+        "Detect TypeScript errors before user notices",
+        "Monitor git status for uncommitted changes",
+        "Track JARVIS/Ollama connectivity",
+        "Verify visual appearance of windows"
+      ]
+    },
+    "code_polishing": {
+      "enabled": true,
+      "authority": "READ_AND_REPORT",
+      "description": "Keep codebase clean and not buggy",
+      "actions": [
+        "Run lint checks and report issues",
+        "Flag debug statements in production code",
+        "Identify unused imports and dead code",
+        "Check for TODO/FIXME comments",
+        "Verify test coverage not dropping"
+      ],
+      "restrictions": [
+        "DO NOT auto-fix without approval",
+        "DO NOT modify src/modules/alarm/** (gold standard)",
+        "DO NOT delete source files",
+        "Report issues to COMMS.md for human review"
+      ]
+    },
+    "visual_quality": {
+      "enabled": true,
+      "description": "Keep Tauri windows polished and not cut off/chaotic",
+      "actions": [
+        "Verify window sizes match content",
+        "Check window controls (min/max/close) visible",
+        "Validate dark theme applied",
+        "Ensure no horizontal scrollbars",
+        "Confirm all UI elements fully visible"
+      ]
+    },
+    "jarvis_james_health": {
+      "enabled": true,
+      "description": "JARVIS and JAMES should ALWAYS be working properly",
+      "critical_checks": [
+        "Ollama running and gemma2:2b available",
+        "TTS voices installed (Windows SAPI)",
+        "JAMES screenshot capture functional",
+        "JARVIS greeting generating on splash"
+      ],
+      "known_limitation": "Splash screen is STATIC HTML - TTS cannot work during splash loading (only after React app loads)"
+    }
+  }
+}

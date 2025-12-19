@@ -1,4 +1,4 @@
-# AUTOAGENTS - Autonomous Coding Agents
+﻿# AUTOAGENTS - Autonomous Coding Agents
 
 Autonomous coding agents using Claude Code SDK for Control Station development.
 
@@ -15,7 +15,7 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ```bash
-# List all tasks
+# List tasks
 python -m autoagents.runners.task_runner --list
 
 # Run first pending task
@@ -28,51 +28,62 @@ python -m autoagents.runners.task_runner --task TASK-001
 python -m autoagents.runners.task_runner --task TASK-001 --max-iterations 3
 ```
 
-## Available Agents
-
-| Agent | Role | Command |
-|-------|------|---------|
-| **Task Runner** | General task execution | `python -m autoagents.runners.task_runner` |
-| **Frontend** | UI/UX development | `python -m autoagents.runners.frontend_runner` |
-| **Sentinel** | DevOps health monitoring | `python -m autoagents.runners.sentinel_runner` |
-| **CS Agent** | Control Station integration | `python -m autoagents.runners.cs_agent_runner` |
-
 ## Project Structure
 
 ```
-autoagents/
-├── lib/                    # Shared utilities
-│   ├── styles.py           # Terminal colors
-│   ├── output.py           # Visual output functions
-│   ├── client.py           # Claude SDK client factory
-│   ├── streaming.py        # AI response streaming
-│   ├── logging_utils.py    # Session logging
-│   └── security.py         # Bash security hooks
-├── agents/                 # Agent configurations
-│   ├── config.py           # Agent definitions
-│   ├── emojis.py           # Emoji mappings
-│   └── sentinel/           # SENTINEL-specific modules
-└── runners/                # Entry point scripts
-    ├── task_runner.py      # General task runner
-    ├── frontend_runner.py  # Frontend agent
-    └── sentinel_runner.py  # Health monitoring
+autonomous-coding/
+├─ autoagents/                     # Shared engine (code only)
+│  ├─ lib/                         # Client, logging, streaming, security
+│  ├─ agents/                      # Agent configs + sentinel modules
+│  └─ runners/                     # Task/front/sentinel runners
+├─ templates/
+│  └─ agent_workspace/             # Clean workspace template (tasks/logs/config)
+├─ workspaces/                     # One isolated workspace per agent
+├─ scripts/                        # Convenience CLI wrappers
+├─ integrations/
+│  └─ control_station/             # Control Station runner
+├─ tasks/                          # Shared baseline task sets
+├─ prompts/                        # Prompt templates
+├─ docs/                           # Documentation
+└─ archive/                        # Legacy code for reference
 ```
 
 ## Task Files
 
-Tasks are defined in JSON files in the `tasks/` directory:
+Tasks live in JSON files inside each workspace. The root `tasks/` directory is the
+baseline template that gets copied into each new workspace.
 
-| File | Purpose |
-|------|---------|
-| `tasks/general.json` | General development tasks |
-| `tasks/frontend.json` | Frontend/UI tasks |
-| `tasks/sentinel.json` | Health monitoring tasks |
+```
+workspaces/<agent>/tasks/
+├─ general.json
+├─ frontend.json
+└─ sentinel.json
+```
+
+## Workspaces (Isolated Agent State)
+
+```bash
+# Create a new workspace (copy template)
+cp -r templates/agent_workspace workspaces/agent_001
+
+# Run using that workspace (tasks/logs/screenshots are isolated)
+python -m autoagents.runners.task_runner --workspace workspaces/agent_001
+python -m autoagents.runners.frontend_runner --workspace workspaces/agent_001 --module dashboard
+python -m autoagents.runners.sentinel_runner --workspace workspaces/agent_001 --continuous
+```
+
+## Available Agents
+
+| Agent | Role | Command |
+|-------|------|---------|
+| Task Runner | General task execution | `python -m autoagents.runners.task_runner` |
+| Frontend | UI/UX development | `python -m autoagents.runners.frontend_runner` |
+| Sentinel | DevOps health monitoring | `python -m autoagents.runners.sentinel_runner` |
+| CS Agent | Control Station integration | `python integrations/control_station/run_cs_agent.py` |
 
 ## Configuration
 
-### Environment Variables
-
-Set in `.env` file:
+Set environment variables in `.env`:
 
 ```bash
 # Authentication (at least one required)
@@ -84,83 +95,23 @@ CLAUDE_CODE_OAUTH_TOKEN=your_oauth_token
 PROGRESS_N8N_WEBHOOK_URL=https://your-webhook-url
 ```
 
-### Agent Models
-
-Default model: `claude-sonnet-4-20250514`
-
-Available agents use different models:
-- **JARVIS1-4**: Sonnet 4 (general development)
-- **CMDTV**: Opus 4.5 (senior review)
-- **SENTINEL**: Sonnet 4 (health monitoring)
-- **CONFIG_FRONTEND**: Sonnet 4 (UI/UX)
-
 ## Testing
 
 ```bash
-# Run all tests
 pytest
-
-# Run with coverage
 pytest --cov=autoagents
-
-# Run specific test file
 pytest tests/test_lib/test_styles.py
-```
-
-## Usage Examples
-
-### Task Runner
-
-```bash
-# List tasks
-python -m autoagents.runners.task_runner --list
-
-# Run task with specific model
-python -m autoagents.runners.task_runner --task TASK-001 --model claude-opus-4-5-20250514
-
-# Use custom tasks file
-python -m autoagents.runners.task_runner --tasks-file ./my-tasks.json
-```
-
-### Frontend Agent
-
-```bash
-# Run on dashboard module
-python -m autoagents.runners.frontend_runner --module dashboard
-
-# Run with visual review
-python -m autoagents.runners.frontend_runner --visual-review
-
-# Continuous mode
-python -m autoagents.runners.frontend_runner --continuous
-```
-
-### Sentinel (Health Monitor)
-
-```bash
-# Quick health check
-python -m autoagents.runners.sentinel_runner -i 1
-
-# Continuous monitoring
-python -m autoagents.runners.sentinel_runner --continuous
-
-# Deep diagnostics
-python -m autoagents.runners.sentinel_runner --deep
 ```
 
 ## Backward Compatibility
 
-Legacy scripts at the root level still work:
-
-```bash
-python run_task.py --list
-python run_frontend_agent.py --module dashboard
-python run_sentinel.py --continuous
-```
+Legacy scripts are archived. Use module entrypoints or the wrappers in `scripts/` if
+you want `python scripts/run_task.py` style usage.
 
 ## Logs
 
-Session logs are saved to `logs/`:
+Session logs are saved inside each workspace under `logs/`:
+
 - Task logs: `logs/TASK-XXX_YYYYMMDD_HHMMSS.log`
 - Frontend logs: `logs/frontend/frontend_YYYYMMDD_HHMMSS.log`
 - Sentinel logs: `logs/sentinel/sentinel_YYYYMMDD_HHMMSS.log`

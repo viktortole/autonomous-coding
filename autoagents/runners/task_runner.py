@@ -38,12 +38,8 @@ from ..lib.output import (
 from ..lib.client import create_agent_client
 from ..lib.streaming import stream_agent_response
 from ..lib.logging_utils import create_session_log, log_iteration
+from ..lib.workspace import resolve_workspace, WorkspacePaths
 
-
-# Paths
-SCRIPT_DIR = Path(__file__).parent.parent.parent
-TASKS_DIR = SCRIPT_DIR / "tasks"
-LOGS_DIR = SCRIPT_DIR / "logs"
 
 # Default settings
 DEFAULT_MODEL = "claude-sonnet-4-20250514"
@@ -54,17 +50,8 @@ DEFAULT_TASKS_FILE = "general.json"
 # DATA MANAGEMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def load_tasks(tasks_file: Path = None) -> dict:
+def load_tasks(tasks_file: Path) -> dict:
     """Load task definitions from JSON file."""
-    if tasks_file is None:
-        tasks_file = TASKS_DIR / DEFAULT_TASKS_FILE
-
-    # Fallback to old location if new doesn't exist
-    if not tasks_file.exists():
-        old_location = SCRIPT_DIR / "feature_list.json"
-        if old_location.exists():
-            tasks_file = old_location
-
     if not tasks_file.exists():
         print(f"{Style.RED}Error: Tasks file not found: {tasks_file}{Style.RESET}")
         return {}
@@ -73,17 +60,8 @@ def load_tasks(tasks_file: Path = None) -> dict:
         return json.load(f)
 
 
-def save_tasks(data: dict, tasks_file: Path = None) -> None:
+def save_tasks(data: dict, tasks_file: Path) -> None:
     """Save updated task definitions."""
-    if tasks_file is None:
-        tasks_file = TASKS_DIR / DEFAULT_TASKS_FILE
-
-    # Fallback to old location if new doesn't exist
-    if not tasks_file.exists():
-        old_location = SCRIPT_DIR / "feature_list.json"
-        if old_location.exists():
-            tasks_file = old_location
-
     with open(tasks_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
@@ -109,7 +87,7 @@ def get_task_by_id(data: dict, task_id: str) -> dict | None:
     return None
 
 
-def update_task_status(data: dict, task_id: str, status: str) -> None:
+def update_task_status(data: dict, task_id: str, status: str, tasks_file: Path) -> None:
     """Update task status in data and save."""
     for task in data.get("tasks", []):
         if task["id"] == task_id:
@@ -125,7 +103,7 @@ def update_task_status(data: dict, task_id: str, status: str) -> None:
     if status in queue:
         queue[status].append(task_id)
 
-    save_tasks(data)
+    save_tasks(data, tasks_file)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -201,7 +179,13 @@ def build_task_prompt(task: dict, project: dict) -> str:
 # TASK RUNNER
 # ═══════════════════════════════════════════════════════════════════════════════
 
-async def run_task(task: dict, project: dict, model: str, max_iterations: int) -> bool:
+async def run_task(
+    task: dict,
+    project: dict,
+    model: str,
+    max_iterations: int,
+    workspace: WorkspacePaths,
+) -> bool:
     """Run a task with the Claude SDK."""
     task_id = task["id"]
     project_dir = Path(project.get("root", "."))
@@ -213,9 +197,9 @@ async def run_task(task: dict, project: dict, model: str, max_iterations: int) -
     prompt = build_task_prompt(task, project)
 
     # Create log file
-    LOGS_DIR.mkdir(exist_ok=True)
+    workspace.logs_dir.mkdir(exist_ok=True)
     log_file = create_session_log(
-        LOGS_DIR, task_id, "AUTOAGENTS", model,
+        workspace.logs_dir, task_id, "AUTOAGENTS", model,
         {"Task": task["title"], "Iterations": max_iterations}
     )
 
@@ -338,6 +322,7 @@ Examples:
     parser.add_argument("--model", type=str, default=DEFAULT_MODEL, help=f"Model to use (default: {DEFAULT_MODEL})")
     parser.add_argument("--list", action="store_true", help="List all tasks")
     parser.add_argument("--tasks-file", type=str, help="Path to tasks JSON file")
+    parser.add_argument("--workspace", type=str, help="Workspace root (tasks/logs live here)")
 
     return parser.parse_args()
 
@@ -346,12 +331,13 @@ async def main() -> None:
     """Main entry point."""
     setup_windows_utf8()
     args = parse_args()
+    workspace = resolve_workspace(args.workspace)
 
     # Print banner
     print_banner()
 
     # Load tasks
-    tasks_file = Path(args.tasks_file) if args.tasks_file else None
+    tasks_file = Path(args.tasks_file) if args.tasks_file else workspace.tasks_dir / DEFAULT_TASKS_FILE
     data = load_tasks(tasks_file)
     if not data:
         return
@@ -383,17 +369,17 @@ async def main() -> None:
             return
 
     # Update status to in_progress
-    update_task_status(data, task["id"], "in_progress")
+    update_task_status(data, task["id"], "in_progress", tasks_file)
     print(f"  {Style.CYAN}Task {task['id']} marked as in_progress{Style.RESET}")
 
     # Run the task
     try:
-        success = await run_task(task, project, args.model, args.max_iterations)
+        success = await run_task(task, project, args.model, args.max_iterations, workspace)
 
         # Update final status
         final_status = "completed" if success else "failed"
         data = load_tasks(tasks_file)  # Reload
-        update_task_status(data, task["id"], final_status)
+        update_task_status(data, task["id"], final_status, tasks_file)
 
         if success:
             print_success_banner(task["id"], args.max_iterations)
@@ -403,13 +389,13 @@ async def main() -> None:
     except KeyboardInterrupt:
         print(f"\n\n  {Style.YELLOW}Interrupted by user{Style.RESET}")
         data = load_tasks(tasks_file)
-        update_task_status(data, task["id"], "pending")
+        update_task_status(data, task["id"], "pending", tasks_file)
         print(f"  {Style.DIM}Task returned to pending queue{Style.RESET}")
 
     except Exception as e:
         print(f"\n  {Style.RED}Fatal error: {e}{Style.RESET}")
         data = load_tasks(tasks_file)
-        update_task_status(data, task["id"], "failed")
+        update_task_status(data, task["id"], "failed", tasks_file)
         print_failure_banner(task["id"], str(e)[:50])
         raise
 

@@ -22,13 +22,14 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-# Ensure parent directory is in path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Ensure repo root is in path for imports
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT))
 
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv(Path(__file__).parent.parent / ".env")
+load_dotenv(REPO_ROOT / ".env")
 
 try:
     from claude_code_sdk import ClaudeCodeOptions, ClaudeSDKClient
@@ -41,15 +42,18 @@ except ImportError:
 # CONFIGURATION
 # ============================================================================
 
-# Project root (control-station)
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+from autoagents.lib.workspace import resolve_workspace
+
+# Project root (autonomous-coding repo)
+PROJECT_ROOT = REPO_ROOT
 
 # Agent working directory
 WORKING_DIR = PROJECT_ROOT
 
-# Log directory
-LOGS_DIR = Path(__file__).parent.parent / "logs"
-LOGS_DIR.mkdir(exist_ok=True)
+# Workspace-resolved log directory
+WORKSPACE = resolve_workspace()
+LOGS_DIR = WORKSPACE.logs_dir
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================================

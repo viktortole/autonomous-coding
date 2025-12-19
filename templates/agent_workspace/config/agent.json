@@ -1,0 +1,6 @@
+﻿{
+  "id": "agent_001",
+  "name": "Agent 001",
+  "role": "general",
+  "model": "claude-sonnet-4-20250514"
+}
