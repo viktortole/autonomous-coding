@@ -2,81 +2,60 @@
   "schema_version": "1.0",
   "agent": "COMMANDER",
   "description": "Orchestration tasks for the Commander agent",
+
+  "main_goal": {
+    "id": "GOAL-001",
+    "title": "FIX JAMES MODULE - Voice & Chat",
+    "priority": "critical",
+    "description": "JAMES AI assistant has two issues: (1) Voice not speaking - no audio output, (2) Chat tab not showing JAMES text responses",
+    "target_modules": ["james"],
+    "success_criteria": [
+      "JAMES speaks responses audibly",
+      "Chat tab displays JAMES text messages",
+      "Both features work together"
+    ],
+    "assigned_agents": ["DEBUGGER", "FRONTEND"],
+    "status": "active"
+  },
+
   "tasks": [
     {
-      "id": "CMD-001",
-      "title": "Morning Status Check",
-      "priority": "high",
-      "category": "monitoring",
-      "description": {
-        "problem": "Need to understand current project state after overnight/previous session",
-        "goal": "Read all agent sections in COMMS.md and create a status summary"
-      },
-      "execution": {
-        "steps": [
-          "Read COMMS.md completely",
-          "Check each agent's last activity",
-          "Identify blocked tasks",
-          "Update STATUS DASHBOARD"
-        ]
-      },
-      "verification": {
-        "success_criteria": [
-          "All agent statuses documented",
-          "Blocked tasks identified",
-          "Dashboard updated"
-        ]
-      }
-    },
-    {
-      "id": "CMD-002",
-      "title": "Task Distribution",
-      "priority": "high",
+      "id": "CMD-JAMES-001",
+      "title": "Coordinate JAMES Voice & Chat Fix",
+      "priority": "critical",
       "category": "orchestration",
       "description": {
-        "problem": "Tasks need to be assigned to appropriate agents",
-        "goal": "Analyze pending tasks and assign to best-fit agents"
+        "problem": "JAMES module has two issues: no voice audio and chat text not displaying",
+        "goal": "Coordinate DEBUGGER to find root cause, then FRONTEND to fix UI issues"
       },
       "execution": {
         "steps": [
-          "Read all pending tasks from each agent's tasks.json",
-          "Match tasks to agent expertise",
-          "Post assignments to ANNOUNCEMENTS",
-          "Update agent task queues"
+          "Spawn DEBUGGER to investigate voice-settings.ts and speakWithJamesVoice function",
+          "Spawn DEBUGGER to check JamesVisionChat.tsx message display logic",
+          "Spawn FRONTEND to fix any UI rendering issues found",
+          "Verify both voice and chat work together"
         ]
       },
       "verification": {
         "success_criteria": [
-          "All high-priority tasks assigned",
-          "No agent overloaded",
-          "Assignments posted to COMMS.md"
-        ]
-      }
-    },
-    {
-      "id": "CMD-003",
-      "title": "Conflict Resolution",
-      "priority": "critical",
-      "category": "coordination",
-      "description": {
-        "problem": "Multiple agents may need the same files",
-        "goal": "Resolve file access conflicts and sequence work appropriately"
-      },
-      "execution": {
-        "steps": [
-          "Check FILE LOCKS section",
-          "Identify conflicting file access",
-          "Prioritize based on task urgency",
-          "Notify affected agents via ANNOUNCEMENTS"
+          "Voice audio plays when JAMES responds",
+          "Chat messages render in the chat tab",
+          "No console errors related to TTS or rendering"
         ]
       },
-      "verification": {
-        "success_criteria": [
-          "No unresolved file conflicts",
-          "Lock priorities documented",
-          "Agents notified"
+      "files": {
+        "target": [
+          "src/modules/james/core/voice-settings.ts",
+          "src/modules/james/chat/JamesVisionChat.tsx",
+          "src/modules/james/chat/ChatMessage.tsx"
         ]
       }
     }
-  ]
+  ],
+
+  "queue": {
+    "pending": ["CMD-JAMES-001"],
+    "in_progress": [],
+    "completed": []
+  }
 }

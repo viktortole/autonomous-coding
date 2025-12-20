@@ -4,58 +4,76 @@
   "description": "Bug investigation and fixing tasks",
   "tasks": [
     {
-      "id": "DEBUG-001",
-      "title": "TypeScript Error Investigation",
-      "priority": "high",
-      "category": "type-errors",
+      "id": "DEBUG-JAMES-001",
+      "title": "JAMES Voice Not Speaking",
+      "priority": "critical",
+      "category": "runtime",
       "status": "pending",
       "description": {
-        "problem": "TypeScript compilation may have errors",
-        "goal": "Find and fix all TypeScript errors"
+        "problem": "JAMES AI assistant voice output is not working - no audio heard when JAMES responds",
+        "goal": "Find root cause of TTS (Text-to-Speech) failure and fix it"
       },
       "execution": {
-        "commands": ["npx tsc --noEmit"],
+        "commands": ["npm run dev"],
         "steps": [
-          "Run TypeScript compiler",
-          "Parse error output",
-          "Investigate each error",
-          "Fix with minimal changes"
+          "Read src/modules/james/core/voice-settings.ts - find speakWithJamesVoice function",
+          "Check if TTS is using Web Speech API or Tauri command",
+          "Look for any try/catch blocks that might be silently catching errors",
+          "Check browser console for TTS-related errors",
+          "Verify voiceSettings.enabled is true in settings.store.ts",
+          "Test if neuralVoice 'en-GB-RyanNeural' is available on system"
         ]
       },
+      "files": [
+        "src/modules/james/core/voice-settings.ts",
+        "src/modules/james/chat/JamesVisionChat.tsx",
+        "src/modules/james/core/settings.store.ts"
+      ],
       "verification": {
-        "commands": ["npx tsc --noEmit"],
-        "success_criteria": ["Zero TypeScript errors"]
+        "success_criteria": [
+          "Root cause identified",
+          "Fix implemented",
+          "Voice audio plays when JAMES responds"
+        ]
       }
     },
     {
-      "id": "DEBUG-002",
-      "title": "Test Failure Investigation",
-      "priority": "high",
-      "category": "test-failures",
+      "id": "DEBUG-JAMES-002",
+      "title": "JAMES Chat Text Not Displaying",
+      "priority": "critical",
+      "category": "runtime",
       "status": "pending",
       "description": {
-        "problem": "Some tests may be failing",
-        "goal": "Investigate and fix failing tests"
+        "problem": "Chat tab does not show JAMES text responses - messages not visible",
+        "goal": "Find why chat messages are not rendering and fix it"
       },
       "execution": {
-        "commands": ["npm test -- --run"],
         "steps": [
-          "Run test suite",
-          "Identify failing tests",
-          "Analyze failure reason",
-          "Determine if test or code is wrong",
-          "Fix appropriately"
+          "Read src/modules/james/chat/JamesVisionChat.tsx - check messages state",
+          "Read src/modules/james/chat/ChatMessage.tsx - check rendering logic",
+          "Verify setMessages is being called with new messages",
+          "Check if messages array is populated but not rendering",
+          "Look for CSS issues (hidden, opacity, z-index)",
+          "Check for conditional rendering that might hide messages"
         ]
       },
+      "files": [
+        "src/modules/james/chat/JamesVisionChat.tsx",
+        "src/modules/james/chat/ChatMessage.tsx",
+        "src/modules/james/chat/index.ts"
+      ],
       "verification": {
-        "commands": ["npm test -- --run"],
-        "success_criteria": ["All tests pass", "No flaky tests"]
+        "success_criteria": [
+          "Root cause identified",
+          "Fix implemented",
+          "Chat messages display correctly"
+        ]
       }
     },
     {
       "id": "DEBUG-003",
       "title": "Runtime Error Analysis",
-      "priority": "critical",
+      "priority": "high",
       "category": "runtime",
       "status": "pending",
       "description": {
@@ -71,5 +89,10 @@
         "success_criteria": ["No console errors", "App functions correctly"]
       }
     }
-  ]
+  ],
+  "queue": {
+    "pending": ["DEBUG-JAMES-001", "DEBUG-JAMES-002"],
+    "in_progress": [],
+    "completed": []
+  }
 }
