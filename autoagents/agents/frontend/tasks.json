@@ -1,0 +1,2189 @@
+{
+  "version": "2.0",
+  "agent": "CONFIG_FRONTEND",
+  "created": "2025-12-19",
+  "project": {
+    "name": "Control Station",
+    "root": "C:/Users/ToleV/Desktop/TestingFolder/control-station",
+    "current_focus": "dashboard",
+    "stack": "Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + Framer Motion"
+  },
+  "agent_instructions": {
+    "mindset": "You are a SENIOR frontend developer. IMPLEMENT, don't just analyze. SHIP code.",
+    "workflow": [
+      "1. Read the screenshot with Read tool - analyze visual state",
+      "2. Read target files to understand current code",
+      "3. Identify specific issues or improvements",
+      "4. IMPLEMENT changes using Edit tool",
+      "5. Run npx tsc --noEmit to verify",
+      "6. If errors, fix them immediately",
+      "7. Move to next task"
+    ],
+    "quality_bar": [
+      "No TypeScript errors",
+      "No unused imports",
+      "No console.logs",
+      "Consistent styling patterns",
+      "Smooth animations (60fps)",
+      "Accessible (keyboard + screen reader)"
+    ]
+  },
+  "queue": {
+    "pending": [
+      "FRONTEND-DASH-023",
+      "FRONTEND-DASH-024",
+      "FRONTEND-DASH-025",
+      "FRONTEND-DASH-026",
+      "FRONTEND-DASH-027",
+      "FRONTEND-DASH-028",
+      "FRONTEND-DASH-029",
+      "FRONTEND-DASH-030",
+      "FRONTEND-DASH-031",
+      "FRONTEND-DASH-032",
+      "FRONTEND-DASH-033",
+      "FRONTEND-DASH-034",
+      "FRONTEND-DASH-035",
+      "FRONTEND-COMP-001",
+      "FRONTEND-COMP-002",
+      "FRONTEND-COMP-003",
+      "FRONTEND-COMP-004",
+      "FRONTEND-COMP-005",
+      "FRONTEND-ANIM-001",
+      "FRONTEND-ANIM-002",
+      "FRONTEND-ANIM-003",
+      "FRONTEND-PERF-001",
+      "FRONTEND-PERF-002",
+      "FRONTEND-A11Y-001",
+      "FRONTEND-A11Y-002",
+      "FRONTEND-FIX-001",
+      "FRONTEND-FIX-002",
+      "FRONTEND-FIX-003"
+    ],
+    "in_progress": [
+      "FRONTEND-DASH-003",
+      "FRONTEND-DASH-004",
+      "FRONTEND-DASH-006",
+      "FRONTEND-DASH-007",
+      "FRONTEND-DASH-008",
+      "FRONTEND-DASH-009",
+      "FRONTEND-DASH-010",
+      "FRONTEND-DASH-011",
+      "FRONTEND-DASH-012",
+      "FRONTEND-DASH-013",
+      "FRONTEND-DASH-014",
+      "FRONTEND-DASH-015",
+      "FRONTEND-DASH-016",
+      "FRONTEND-DASH-017"
+    ],
+    "completed": [
+      "FRONTEND-DASH-001",
+      "FRONTEND-DASH-002",
+      "FRONTEND-DASH-005",
+      "FRONTEND-DASH-018",
+      "FRONTEND-DASH-019",
+      "FRONTEND-DASH-020",
+      "FRONTEND-DASH-021",
+      "FRONTEND-DASH-022"
+    ],
+    "failed": []
+  },
+  "tasks": [
+    {
+      "id": "FRONTEND-DASH-001",
+      "title": "Enhance Hero Section Animations",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "completed",
+      "iterations": 2
+    },
+    {
+      "id": "FRONTEND-DASH-002",
+      "title": "Premium Stat Card Hover Effects",
+      "module": "dashboard",
+      "category": "interaction",
+      "priority": "high",
+      "complexity": "easy",
+      "status": "completed",
+      "iterations": 1
+    },
+    {
+      "id": "FRONTEND-DASH-003",
+      "title": "Loading Skeleton Premium Polish",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Loading skeletons are basic rectangles without proper shimmer or matching card shapes",
+        "goal": "Create premium skeleton components with diagonal shimmer, matching card dimensions, smooth fade transitions",
+        "scope": "dashboard-view.tsx loading states",
+        "user_impact": "Perceived performance boost, professional loading experience"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ],
+        "context": [
+          "src/app/custom-enhancements.css"
+        ],
+        "create_if_needed": [
+          "src/modules/dashboard/components/dashboard-skeleton.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create DashboardSkeleton component with proper card dimensions",
+          "Add diagonal shimmer animation using CSS keyframes",
+          "Match border-radius to actual cards (rounded-2xl)",
+          "Add smooth opacity transition when data loads",
+          "Ensure skeleton heights prevent layout shift"
+        ],
+        "patterns": [
+          "Use bg-white/5 as base, bg-white/10 for shimmer",
+          "Shimmer animation: 1.5s ease-in-out infinite",
+          "Use skeleton-shimmer class from custom-enhancements.css"
+        ]
+      },
+      "acceptance_criteria": [
+        "Skeleton matches actual card dimensions exactly",
+        "Diagonal shimmer animation is smooth",
+        "No layout shift when content loads",
+        "Transition from skeleton to content is seamless"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ],
+        "visual": [
+          "Loading state looks premium",
+          "No flicker on transition"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-004",
+      "title": "Gamification Card Daily Bonus Animation",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Daily bonus claim button lacks visual feedback and celebration animation",
+        "goal": "Add pulse animation on button, confetti/sparkle effect on claim success, animated cargo counter",
+        "scope": "gamification-card.tsx",
+        "user_impact": "Claiming daily bonus feels rewarding and celebratory"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/gamification-card.tsx"
+        ],
+        "context": [
+          "src/modules/gamification/components/index.ts",
+          "src/app/custom-enhancements.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add subtle pulse animation to 'Claim' button when available",
+          "Create success animation on claim (scale + glow burst)",
+          "Add AnimatedNumber component for cargo balance",
+          "Show +X cargo earned with fade-up animation",
+          "Progress bar should animate smoothly on change"
+        ],
+        "patterns": [
+          "Use Framer Motion for complex animations",
+          "AnimatedNumber: use requestAnimationFrame, not setState",
+          "Pulse: scale(1.05) with box-shadow glow"
+        ]
+      },
+      "acceptance_criteria": [
+        "Claim button pulses gently when bonus available",
+        "Clicking claim shows satisfying feedback",
+        "Cargo balance counts up smoothly",
+        "Progress bar transitions smoothly"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-005",
+      "title": "Workspace Preview Cards Gradient Enhancement",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Workspace navigation cards have weak gradients and basic hover states",
+        "goal": "Vibrant module-specific gradients, icon animations, improved CTA buttons",
+        "scope": "workspace-preview-cards.tsx",
+        "user_impact": "Module cards are visually distinct and inviting"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/workspace-preview-cards.tsx"
+        ],
+        "context": [
+          "src/app/custom-enhancements.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Define unique gradient for each workspace (Focus=blue, Planning=purple, etc)",
+          "Add icon scale + rotation on card hover",
+          "CTA button: filled background on hover with arrow slide",
+          "Locked card (News) should have grayscale + lock icon overlay"
+        ],
+        "color_scheme": {
+          "focus_guardian": "from-blue-500/20 to-cyan-500/10",
+          "roadmap": "from-purple-500/20 to-pink-500/10",
+          "automation": "from-orange-500/20 to-amber-500/10",
+          "insights": "from-green-500/20 to-emerald-500/10"
+        }
+      },
+      "acceptance_criteria": [
+        "Each workspace has distinct, vibrant gradient",
+        "Icons animate smoothly on hover",
+        "CTA buttons have clear interactive state",
+        "Locked card is obviously non-interactive"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-006",
+      "title": "Recharts Animation Integration",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Charts render instantly without draw-in animation, feels static",
+        "goal": "Area charts rise from bottom, bars grow from 0, pie segments draw clockwise",
+        "scope": "productivity-charts.tsx",
+        "user_impact": "Charts feel dynamic and data feels fresh"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ],
+        "context": [
+          "src/modules/dashboard/components/premium-chart-wrapper.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add Recharts animationBegin and animationDuration props",
+          "Area chart: animationEasing='ease-out', duration 800ms",
+          "Bar chart: add stagger effect using animationBegin offset",
+          "Pie chart: use startAngle/endAngle animation",
+          "Trigger animation only when chart enters viewport (IntersectionObserver)"
+        ],
+        "recharts_config": {
+          "area": "isAnimationActive={true} animationDuration={800}",
+          "bar": "animationBegin={index * 100} animationDuration={600}",
+          "pie": "animationDuration={1000} animationEasing='ease-out'"
+        }
+      },
+      "acceptance_criteria": [
+        "All charts have entrance animation",
+        "Animation only plays once when chart visible",
+        "Data updates animate smoothly",
+        "No jank or dropped frames"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-007",
+      "title": "Mobile Responsive Layout Fix",
+      "module": "dashboard",
+      "category": "responsive",
+      "priority": "critical",
+      "complexity": "hard",
+      "status": "in_progress",
+      "iterations": 3,
+      "description": {
+        "problem": "Dashboard may have horizontal scroll, small touch targets, cramped cards on mobile",
+        "goal": "Perfect single-column layout on mobile, 44px+ touch targets, readable text",
+        "scope": "All dashboard components",
+        "user_impact": "Dashboard usable on phones and tablets"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/workspace-preview-cards.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ],
+        "context": [
+          "tailwind.config.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Audit all components at 375px width (iPhone SE)",
+          "Fix any horizontal overflow (check for fixed widths)",
+          "Ensure grid collapses to single column: grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+          "Increase touch targets to 44px minimum (buttons, cards)",
+          "Test chart container widths are 100%",
+          "Add horizontal scroll for workspace cards on mobile"
+        ],
+        "breakpoints": {
+          "mobile": "< 640px: Single column, full width",
+          "tablet": "640-1024px: 2 columns",
+          "desktop": "> 1024px: 4 column bento grid"
+        }
+      },
+      "acceptance_criteria": [
+        "No horizontal scroll at any breakpoint",
+        "All touch targets >= 44px",
+        "Text readable without zooming (16px+ body)",
+        "Cards stack properly on mobile",
+        "Charts resize without breaking"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ],
+        "manual": [
+          "Test at 375px, 768px, 1024px, 1440px widths"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-008",
+      "title": "Accessibility Focus States",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Interactive elements lack visible focus states, keyboard navigation unclear",
+        "goal": "All interactive elements have visible focus rings, keyboard navigation works",
+        "scope": "All dashboard components",
+        "user_impact": "Keyboard users can navigate dashboard effectively"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/gamification-card.tsx",
+          "src/modules/dashboard/components/workspace-preview-cards.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add focus-visible:ring-2 focus-visible:ring-purple-500 to all buttons",
+          "Add focus-visible:ring-2 to clickable cards",
+          "Ensure focus order matches visual order (no tabindex hacks)",
+          "Add :focus-within styles for compound components",
+          "Test with Tab key navigation"
+        ],
+        "focus_style": "focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+      },
+      "acceptance_criteria": [
+        "All buttons have visible focus ring",
+        "All clickable cards have visible focus ring",
+        "Tab order is logical",
+        "Focus never gets lost or trapped"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ],
+        "manual": [
+          "Navigate entire dashboard with Tab key"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-009",
+      "title": "ARIA Labels for Screen Readers",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Screen readers announce generic content, stat cards lack context",
+        "goal": "Meaningful aria-labels, proper headings hierarchy, live regions for updates",
+        "scope": "All dashboard components",
+        "user_impact": "Screen reader users understand dashboard content"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add aria-label to stat cards: 'Focus sessions: 5 today, up 20% from yesterday'",
+          "Add role='region' and aria-labelledby to main sections",
+          "Use proper heading hierarchy (h1 > h2 > h3)",
+          "Add aria-live='polite' for data that updates",
+          "Charts need aria-label describing the data"
+        ],
+        "examples": {
+          "stat_card": "aria-label={`${title}: ${value} ${unit}, ${trendDescription}`}",
+          "chart": "aria-label='Weekly focus sessions chart showing 5 days of data'"
+        }
+      },
+      "acceptance_criteria": [
+        "Every stat card has descriptive aria-label",
+        "Charts have summary aria-labels",
+        "Heading hierarchy is correct (no skipped levels)",
+        "Dynamic content announced appropriately"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-010",
+      "title": "Empty State Design System",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "New users see broken-looking empty states, no guidance on getting started",
+        "goal": "Beautiful empty states with icon, message, and CTA for each card type",
+        "scope": "All dashboard cards",
+        "user_impact": "New users know exactly what to do"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/productivity-stats-cards.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ],
+        "create_if_needed": [
+          "src/modules/dashboard/components/empty-state.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create reusable EmptyState component with icon, title, message, CTA",
+          "Add empty state for: no focus sessions, no tasks, no achievements",
+          "Use encouraging tone: 'Start your first focus session'",
+          "CTA links to relevant module",
+          "Consistent visual style across all empty states"
+        ],
+        "empty_states": {
+          "focus_sessions": {
+            "icon": "Clock",
+            "message": "No focus sessions yet",
+            "cta": "Start focusing"
+          },
+          "tasks": {
+            "icon": "CheckSquare",
+            "message": "No tasks tracked",
+            "cta": "Plan your work"
+          },
+          "achievements": {
+            "icon": "Trophy",
+            "message": "Achievements await",
+            "cta": "Earn your first badge"
+          }
+        }
+      },
+      "acceptance_criteria": [
+        "Every data card has an empty state",
+        "Empty states are visually consistent",
+        "CTAs are actionable and link correctly",
+        "Tone is encouraging, not sad"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-011",
+      "title": "Trend Indicator Micro-animations",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "in_progress",
+      "iterations": 1,
+      "description": {
+        "problem": "Trend arrows are static, percentage change isn't immediately clear",
+        "goal": "Animated arrow on appear, clear color coding, tooltip explanation",
+        "scope": "trend-indicator.tsx",
+        "user_impact": "Trends are instantly understandable"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/trend-indicator.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add bounce-in animation for arrow icon",
+          "Green for positive, red for negative, gray for neutral",
+          "Add tooltip: 'Compared to yesterday/last week'",
+          "Percentage text should fade in after arrow"
+        ]
+      },
+      "acceptance_criteria": [
+        "Arrow has subtle entrance animation",
+        "Colors clearly indicate trend direction",
+        "Tooltip provides context",
+        "Animation is not distracting"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-012",
+      "title": "Status Badge Live Pulse",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "in_progress",
+      "iterations": 1,
+      "description": {
+        "problem": "Live/stale/offline badges are static, unclear what they mean",
+        "goal": "Live badge pulses, stale is amber, offline is gray with reconnecting animation",
+        "scope": "status-badge.tsx",
+        "user_impact": "Data freshness is immediately clear"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/status-badge.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Live: Green dot with pulse animation (opacity 0.5 \u2192 1)",
+          "Stale: Amber/yellow, static",
+          "Offline: Gray with spinning refresh icon",
+          "Hover tooltip: 'Last updated X seconds ago'"
+        ]
+      },
+      "acceptance_criteria": [
+        "Live status is obviously 'live' with pulse",
+        "Colors match severity",
+        "Hover shows last update time",
+        "Badge doesn't distract from main content"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-013",
+      "title": "Drag-Drop Reorder Polish",
+      "module": "dashboard",
+      "category": "interaction",
+      "priority": "low",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Section drag-drop has weak visual feedback, unclear drop zones",
+        "goal": "Clear drag handle, lifted shadow while dragging, blue line drop indicator",
+        "scope": "DraggableSection.tsx, useDashboardDnd.ts",
+        "user_impact": "Customizing dashboard layout is satisfying"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/DraggableSection.tsx",
+          "src/modules/dashboard/hooks/useDashboardDnd.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add 6-dot grip icon as drag handle (visible on hover)",
+          "While dragging: opacity 0.8, scale 1.02, shadow-xl",
+          "Drop indicator: 2px blue line where item will go",
+          "Animate sections sliding apart to make room"
+        ]
+      },
+      "acceptance_criteria": [
+        "Drag handle visible on section hover",
+        "Clear visual feedback while dragging",
+        "Drop zone is obvious",
+        "Animation is smooth, not janky"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-014",
+      "title": "Quick Actions Smart Suggestions",
+      "module": "dashboard",
+      "category": "feature",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Quick actions are generic, not contextual to user's state",
+        "goal": "Show relevant actions based on time of day, current data, user habits",
+        "scope": "dashboard-view.tsx quick actions section",
+        "user_impact": "Dashboard suggests exactly what user should do next"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Morning: 'Plan your day', 'Review tasks'",
+          "Afternoon: 'Start focus session', 'Check progress'",
+          "Evening: 'Review achievements', 'Plan tomorrow'",
+          "If no sessions today: prioritize 'Start focus session'",
+          "If tasks overdue: prioritize 'Review roadmap'"
+        ]
+      },
+      "acceptance_criteria": [
+        "Actions change based on time of day",
+        "Actions change based on user data",
+        "Icons match action meaning",
+        "Actions are keyboard accessible"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-015",
+      "title": "React.memo Optimization Pass",
+      "module": "dashboard",
+      "category": "performance",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Stat cards and charts may re-render unnecessarily on parent state changes",
+        "goal": "Wrap pure components in React.memo, use useMemo for computed values",
+        "scope": "All dashboard components",
+        "user_impact": "Smoother performance, less CPU usage"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx",
+          "src/modules/dashboard/components/gamification-card.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Wrap PremiumStatCard in React.memo",
+          "Wrap chart components in React.memo",
+          "Add useMemo for computed props (percentages, formatted numbers)",
+          "Add useCallback for event handlers passed to children",
+          "Verify with React DevTools Profiler"
+        ]
+      },
+      "acceptance_criteria": [
+        "Stat cards don't re-render when unrelated state changes",
+        "Charts don't re-render on every parent update",
+        "No unnecessary calculations on each render"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-016",
+      "title": "Lazy Load Below-Fold Components",
+      "module": "dashboard",
+      "category": "performance",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 1,
+      "description": {
+        "problem": "All dashboard components load immediately even if not visible",
+        "goal": "Lazy load charts and lower sections using React.lazy + Suspense",
+        "scope": "dashboard-view.tsx",
+        "user_impact": "Faster initial load, better perceived performance"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Identify below-fold components (charts, workspace cards)",
+          "Wrap in React.lazy() with dynamic import",
+          "Add Suspense boundary with skeleton fallback",
+          "Use IntersectionObserver to trigger load when approaching viewport"
+        ]
+      },
+      "acceptance_criteria": [
+        "Charts lazy load when scrolled near",
+        "Suspense fallback shows skeleton",
+        "No flash of empty content",
+        "Initial load is faster"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-017",
+      "title": "CSS Variables Theme Consistency",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "in_progress",
+      "iterations": 2,
+      "description": {
+        "problem": "Some colors may be hardcoded, not using CSS variables, breaks theme consistency",
+        "goal": "All colors use CSS variables or Tailwind classes, no hardcoded hex values",
+        "scope": "All dashboard components",
+        "user_impact": "Consistent theming, ready for light mode"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ],
+        "context": [
+          "src/app/globals.css",
+          "tailwind.config.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Search for hardcoded hex values (#xxx or rgb())",
+          "Replace with Tailwind classes or CSS variables",
+          "Ensure charts use theme colors",
+          "Verify all gradients use variable colors"
+        ]
+      },
+      "acceptance_criteria": [
+        "No hardcoded color values in TSX files",
+        "All colors come from Tailwind or CSS variables",
+        "Components look correct in dark mode",
+        "Gradients are consistent"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-018",
+      "title": "Hero Greeting Time-Based Variants",
+      "module": "dashboard",
+      "category": "feature",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Hero greeting is generic, doesn't acknowledge time of day or user's name",
+        "goal": "Personalized greeting: 'Good morning, [Name]. Ready to focus?'",
+        "scope": "dashboard-view.tsx hero section",
+        "user_impact": "Dashboard feels personal and welcoming"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Get user name from settings/auth",
+          "Calculate time of day (morning/afternoon/evening)",
+          "Compose greeting: 'Good [time], [Name].'",
+          "Add contextual sub-message based on data",
+          "Fallback if no name: 'Good morning. Ready to focus?'"
+        ]
+      },
+      "acceptance_criteria": [
+        "Greeting changes based on time",
+        "User name displayed if available",
+        "Sub-message is contextual",
+        "Fallback works when no name"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-019",
+      "title": "Radial Progress Ring Animation",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Radial progress ring doesn't animate from 0 to value, feels static",
+        "goal": "Smooth SVG stroke-dashoffset animation on mount and value change",
+        "scope": "dashboard-view.tsx radial progress",
+        "user_impact": "Progress feels dynamic and satisfying"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Use CSS transition on stroke-dashoffset",
+          "Animate from circumference (0%) to calculated offset",
+          "Duration: 1000ms ease-out",
+          "Re-animate when value changes",
+          "Add subtle glow effect at current position"
+        ]
+      },
+      "acceptance_criteria": [
+        "Ring fills smoothly from 0 on mount",
+        "Ring animates when value changes",
+        "Animation is smooth 60fps",
+        "Optional glow at progress tip"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-020",
+      "title": "Stat Card Icon Badge Polish",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Icon badges in stat cards could have better visual treatment",
+        "goal": "Subtle gradient background, slight shadow, icon scales on card hover",
+        "scope": "premium-stat-card.tsx icon badge",
+        "user_impact": "Cards look more premium and polished"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/premium-stat-card.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add subtle radial gradient to icon background",
+          "Add soft shadow (shadow-lg with low opacity)",
+          "Scale icon 1.1x when parent card is hovered",
+          "Ensure icon color contrasts with background"
+        ]
+      },
+      "acceptance_criteria": [
+        "Icon badge has depth/dimension",
+        "Icon scales smoothly on card hover",
+        "Colors are consistent with card variant"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-021",
+      "title": "Chart Tooltip Redesign",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Chart tooltips use default Recharts styling, doesn't match app design",
+        "goal": "Custom tooltip component matching app design system",
+        "scope": "productivity-charts.tsx tooltips",
+        "user_impact": "Charts feel integrated with app design"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ],
+        "create_if_needed": [
+          "src/modules/dashboard/components/chart-tooltip.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create ChartTooltip component with dark theme styling",
+          "Match border radius, colors, shadows to app style",
+          "Show formatted values with units",
+          "Add subtle animation on appear"
+        ]
+      },
+      "acceptance_criteria": [
+        "Tooltip matches app design",
+        "Values are properly formatted",
+        "Tooltip appears/disappears smoothly",
+        "Works on touch devices"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-022",
+      "title": "Streak Counter Celebration",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "completed",
+      "iterations": 1,
+      "description": {
+        "problem": "Streak counter is static, no celebration for milestone streaks",
+        "goal": "Flame icon animates on streaks, special effects at milestones (7, 30, 100)",
+        "scope": "dashboard-view.tsx streak card",
+        "user_impact": "Maintaining streaks feels rewarding"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Flame icon has subtle flicker animation",
+          "At 7-day: 'Week streak!' badge",
+          "At 30-day: 'Month streak!' badge + glow",
+          "At 100-day: Special celebration animation"
+        ]
+      },
+      "acceptance_criteria": [
+        "Flame icon has life/animation",
+        "Milestone badges appear at thresholds",
+        "Celebrations are satisfying but not annoying"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-023",
+      "title": "Section Collapse Animation",
+      "module": "dashboard",
+      "category": "animation",
+      "priority": "low",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Dashboard sections collapse/expand with basic transition",
+        "goal": "Smooth height animation with content fade, icon rotation",
+        "scope": "DraggableSection.tsx collapse functionality",
+        "user_impact": "Section management feels polished"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/DraggableSection.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Use Framer Motion for height animation (initial, animate, exit)",
+          "Chevron icon rotates 180\u00b0 when collapsed",
+          "Content fades out before height collapses",
+          "Use layoutId for smooth transitions"
+        ]
+      },
+      "acceptance_criteria": [
+        "Collapse animation is smooth",
+        "Expand animation is smooth",
+        "Icon rotation is synced",
+        "No layout jump"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-024",
+      "title": "Number Formatting Consistency",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Numbers displayed inconsistently (1000 vs 1,000 vs 1k)",
+        "goal": "Consistent number formatting across all dashboard displays",
+        "scope": "All dashboard number displays",
+        "user_impact": "Numbers are easy to read and compare"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/premium-stat-card.tsx"
+        ],
+        "create_if_needed": [
+          "src/shared/utils/format-number.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create formatNumber utility: 1000 \u2192 1,000 or 1K",
+          "Small numbers (< 10000): show with commas",
+          "Large numbers: abbreviate (10K, 1.2M)",
+          "Percentages: always show one decimal",
+          "Apply consistently across all stats"
+        ]
+      },
+      "acceptance_criteria": [
+        "All numbers use consistent formatting",
+        "Large numbers are abbreviated",
+        "Percentages have consistent decimals",
+        "Numbers are locale-aware"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-025",
+      "title": "Card Border Hover Gradient",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Card borders are static, could have animated gradient on hover",
+        "goal": "Subtle gradient border animation on card hover",
+        "scope": "premium-stat-card.tsx, workspace-preview-cards.tsx",
+        "user_impact": "Cards feel more interactive and premium"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/workspace-preview-cards.tsx"
+        ],
+        "context": [
+          "src/app/custom-enhancements.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Use gradient border technique (background-clip)",
+          "Animate gradient position on hover",
+          "Keep it subtle - 1px border, slow animation",
+          "Use brand colors (purple-blue gradient)"
+        ]
+      },
+      "acceptance_criteria": [
+        "Border gradient animates on hover",
+        "Animation is subtle, not distracting",
+        "Consistent across card types"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-026",
+      "title": "Loading State Orchestration",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "Different cards load at different times, feels disjointed",
+        "goal": "Coordinated loading: skeletons \u2192 staggered content reveal",
+        "scope": "dashboard-view.tsx loading orchestration",
+        "user_impact": "Dashboard loads feel smooth and intentional"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Show all skeletons simultaneously",
+          "Wait for all data to load (Promise.all or loading state)",
+          "Reveal cards with stagger animation (50ms delay each)",
+          "Hero first, then stats, then charts, then actions"
+        ]
+      },
+      "acceptance_criteria": [
+        "Skeletons appear together",
+        "Content reveals in logical order",
+        "No popping or jarring transitions",
+        "Works even if some data fails"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-027",
+      "title": "Error State Design",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "No designed error states when data fails to load",
+        "goal": "Clear error states with retry option for each card",
+        "scope": "All dashboard cards",
+        "user_impact": "Users understand what went wrong and can retry"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ],
+        "create_if_needed": [
+          "src/modules/dashboard/components/error-state.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create ErrorState component with icon, message, retry button",
+          "Style consistently with empty states",
+          "Add retry functionality that re-fetches data",
+          "Show specific error message if available"
+        ]
+      },
+      "acceptance_criteria": [
+        "Each card can show error state",
+        "Error message is helpful",
+        "Retry button works",
+        "Consistent styling with empty states"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-028",
+      "title": "Keyboard Shortcuts for Actions",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "low",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Power users can't quickly navigate dashboard with keyboard",
+        "goal": "Keyboard shortcuts for common actions (start focus, open roadmap, etc)",
+        "scope": "dashboard-view.tsx keyboard handling",
+        "user_impact": "Power users can navigate faster"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add useEffect for keydown listener",
+          "F key: Start focus session",
+          "R key: Open roadmap",
+          "? key: Show keyboard shortcuts modal",
+          "Ensure shortcuts don't fire when typing in inputs"
+        ]
+      },
+      "acceptance_criteria": [
+        "Keyboard shortcuts work",
+        "Shortcuts don't conflict with browser/system",
+        "Shortcuts discoverable (? shows help)",
+        "Don't fire when in text inputs"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-029",
+      "title": "Data Refresh Indicator",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Users don't know when dashboard data was last refreshed",
+        "goal": "Show last refresh time, add manual refresh button",
+        "scope": "dashboard-view.tsx header area",
+        "user_impact": "Users trust data freshness"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add 'Last updated: X minutes ago' text",
+          "Add refresh button with rotating icon",
+          "Show loading state while refreshing",
+          "Auto-refresh every 5 minutes (optional)"
+        ]
+      },
+      "acceptance_criteria": [
+        "Last update time shown",
+        "Refresh button works",
+        "Loading state during refresh",
+        "Time updates in real-time"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-030",
+      "title": "Scrollbar Styling",
+      "module": "dashboard",
+      "category": "visual",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Default browser scrollbars break dark theme aesthetic",
+        "goal": "Custom styled scrollbars matching dark theme",
+        "scope": "Global styles and dashboard scroll areas",
+        "user_impact": "Consistent visual experience while scrolling"
+      },
+      "files": {
+        "target": [
+          "src/app/globals.css"
+        ],
+        "context": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add ::-webkit-scrollbar styles to globals.css",
+          "Dark track, lighter thumb",
+          "Thumb darkens on hover",
+          "Use scrollbar-thin for smaller scroll areas"
+        ],
+        "css": {
+          "track": "bg-slate-800",
+          "thumb": "bg-slate-600 hover:bg-slate-500",
+          "width": "8px main, 4px for inner scroll"
+        }
+      },
+      "acceptance_criteria": [
+        "Scrollbars match dark theme",
+        "Scrollbars are visible but not distracting",
+        "Hover state on thumb",
+        "Works in WebKit browsers"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-031",
+      "title": "Print Stylesheet",
+      "module": "dashboard",
+      "category": "ux",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Dashboard doesn't print well (dark background, missing data)",
+        "goal": "Clean print stylesheet showing key stats in readable format",
+        "scope": "Print media query styles",
+        "user_impact": "Users can print/PDF their dashboard summary"
+      },
+      "files": {
+        "target": [
+          "src/app/globals.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add @media print styles",
+          "White background, black text",
+          "Hide interactive elements (buttons, hover effects)",
+          "Show key stats and numbers clearly",
+          "Add date/time of print"
+        ]
+      },
+      "acceptance_criteria": [
+        "Dashboard prints cleanly",
+        "Key information visible",
+        "No dark backgrounds",
+        "Interactive elements hidden"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ],
+        "manual": [
+          "Ctrl+P to preview print"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-032",
+      "title": "Color Blind Friendly Palette",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Red/green for trends may be indistinguishable for color blind users",
+        "goal": "Use patterns/icons in addition to color, test with color blind simulators",
+        "scope": "All color-coded elements",
+        "user_impact": "Color blind users can understand all information"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/trend-indicator.tsx",
+          "src/modules/dashboard/components/productivity-charts.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add icons to trend indicators (\u2191 \u2193 \u2192) not just color",
+          "Use texture/pattern in charts if possible",
+          "Test with Daltonize or similar tool",
+          "Ensure 3:1 contrast minimum between data series"
+        ]
+      },
+      "acceptance_criteria": [
+        "Trends understandable without color",
+        "Charts distinguishable without color",
+        "Passes color blind simulation test"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-033",
+      "title": "Animation Reduced Motion Support",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Users with vestibular disorders may be affected by animations",
+        "goal": "Respect prefers-reduced-motion, disable animations when set",
+        "scope": "All animated components",
+        "user_impact": "Accessible to users with motion sensitivity"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/app/globals.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add @media (prefers-reduced-motion: reduce) styles",
+          "Set animation: none and transition: none",
+          "Use useReducedMotion hook in Framer Motion",
+          "Replace animations with instant state changes"
+        ]
+      },
+      "acceptance_criteria": [
+        "Animations disabled when prefers-reduced-motion set",
+        "Dashboard still functional without animations",
+        "No layout shift from disabled animations"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-034",
+      "title": "High Contrast Mode Support",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "low",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Dashboard may not work well with Windows High Contrast mode",
+        "goal": "Test and fix high contrast mode support",
+        "scope": "All dashboard components",
+        "user_impact": "Users with vision impairments can use dashboard"
+      },
+      "files": {
+        "target": [
+          "src/app/globals.css"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add @media (forced-colors: active) styles",
+          "Ensure borders are visible",
+          "Use system colors where appropriate",
+          "Test with Windows High Contrast"
+        ]
+      },
+      "acceptance_criteria": [
+        "Dashboard usable in high contrast mode",
+        "All elements visible and distinguishable",
+        "Interactive elements obvious"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-DASH-035",
+      "title": "Semantic HTML Audit",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Dashboard may use div soup instead of semantic HTML",
+        "goal": "Use proper semantic elements: main, section, article, nav, aside",
+        "scope": "dashboard-view.tsx structure",
+        "user_impact": "Screen readers can navigate by landmarks"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Wrap main content in <main>",
+          "Use <section> for logical sections with aria-label",
+          "Use <article> for self-contained cards",
+          "Use <nav> for workspace navigation cards",
+          "Add skip links for keyboard users"
+        ]
+      },
+      "acceptance_criteria": [
+        "Proper semantic elements used",
+        "Screen reader can navigate by landmarks",
+        "Skip link to main content"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-COMP-001",
+      "title": "Create Reusable Card Component",
+      "module": "shared",
+      "category": "component",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "Card styling is duplicated across components",
+        "goal": "Create single Card component with variants for all dashboard uses",
+        "scope": "New shared component",
+        "user_impact": "Consistent card styling, easier maintenance"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/ui/card.tsx"
+        ],
+        "target": [
+          "src/modules/dashboard/components/premium-stat-card.tsx",
+          "src/modules/dashboard/components/gamification-card.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create Card component with base styling",
+          "Add variants: default, elevated, interactive, outline",
+          "Add size props: sm, md, lg",
+          "Migrate dashboard cards to use new component",
+          "Export from components/ui/index"
+        ]
+      },
+      "acceptance_criteria": [
+        "Card component supports all needed variants",
+        "Dashboard cards refactored to use it",
+        "Consistent styling across uses",
+        "TypeScript types exported"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-COMP-002",
+      "title": "Create Reusable Badge Component",
+      "module": "shared",
+      "category": "component",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Badge/pill styling duplicated, inconsistent",
+        "goal": "Create single Badge component with color variants",
+        "scope": "New shared component",
+        "user_impact": "Consistent badge styling"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/ui/badge.tsx"
+        ],
+        "target": [
+          "src/modules/dashboard/components/status-badge.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create Badge component with color variants",
+          "Variants: success, warning, error, info, neutral",
+          "Add pulse prop for animated badges",
+          "Migrate status badges to use it"
+        ]
+      },
+      "acceptance_criteria": [
+        "Badge component supports all colors",
+        "Pulse animation option works",
+        "Consistent with design system"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-COMP-003",
+      "title": "Create AnimatedNumber Component",
+      "module": "shared",
+      "category": "component",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Number counting animations implemented inconsistently",
+        "goal": "Create reusable AnimatedNumber component using requestAnimationFrame",
+        "scope": "New shared component",
+        "user_impact": "Smooth number animations everywhere"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/ui/animated-number.tsx"
+        ],
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx",
+          "src/modules/dashboard/components/gamification-card.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create AnimatedNumber with value, duration props",
+          "Use requestAnimationFrame, not setInterval",
+          "Support formatting (commas, decimals, prefix/suffix)",
+          "Add easing option (linear, easeOut)",
+          "Use tabular-nums for stable layout"
+        ]
+      },
+      "acceptance_criteria": [
+        "Numbers animate smoothly",
+        "No layout shift during animation",
+        "Formatting options work",
+        "Performance is good (no dropped frames)"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-COMP-004",
+      "title": "Create Skeleton Component Library",
+      "module": "shared",
+      "category": "component",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Skeleton loading states inconsistent across app",
+        "goal": "Create skeleton primitives: SkeletonText, SkeletonCircle, SkeletonRect",
+        "scope": "New shared components",
+        "user_impact": "Consistent loading states everywhere"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/ui/skeleton.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create base Skeleton with shimmer animation",
+          "Add SkeletonText with line variants",
+          "Add SkeletonCircle for avatars/icons",
+          "Add SkeletonRect for cards/images",
+          "Compose into SkeletonCard, SkeletonChart"
+        ]
+      },
+      "acceptance_criteria": [
+        "All skeleton variants work",
+        "Shimmer animation is smooth",
+        "Easy to compose into complex skeletons"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-COMP-005",
+      "title": "Create Tooltip Component",
+      "module": "shared",
+      "category": "component",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Tooltips needed in multiple places but no consistent component",
+        "goal": "Create accessible tooltip using Radix UI Tooltip",
+        "scope": "New shared component",
+        "user_impact": "Consistent tooltips with good accessibility"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/ui/tooltip.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Use @radix-ui/react-tooltip as base",
+          "Style to match dark theme",
+          "Add delay prop (default 300ms)",
+          "Ensure keyboard accessible",
+          "Add arrow option"
+        ]
+      },
+      "acceptance_criteria": [
+        "Tooltip shows on hover and focus",
+        "Styled to match app",
+        "Accessible via keyboard",
+        "Configurable delay"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-ANIM-001",
+      "title": "Page Transition Animation",
+      "module": "shared",
+      "category": "animation",
+      "priority": "medium",
+      "complexity": "hard",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "Navigation between pages is instant, feels abrupt",
+        "goal": "Smooth fade/slide transition when navigating between modules",
+        "scope": "App layout, page transitions",
+        "user_impact": "Navigation feels smooth and polished"
+      },
+      "files": {
+        "target": [
+          "src/app/layout.tsx"
+        ],
+        "context": [
+          "src/app/page.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Add Framer Motion AnimatePresence to layout",
+          "Create page wrapper with exit/enter animations",
+          "Use opacity + subtle y transform",
+          "Keep animations fast (200-300ms)"
+        ]
+      },
+      "acceptance_criteria": [
+        "Pages transition smoothly",
+        "Animation is fast, not sluggish",
+        "Back navigation also animates",
+        "No content flash"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-ANIM-002",
+      "title": "Staggered List Animations",
+      "module": "shared",
+      "category": "animation",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Lists of items appear all at once, could use stagger",
+        "goal": "Create reusable staggered animation wrapper",
+        "scope": "New animation utility",
+        "user_impact": "Lists feel more dynamic"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/motion/stagger-container.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Create StaggerContainer with staggerChildren variant",
+          "Create StaggerItem for child elements",
+          "Default stagger: 50ms between items",
+          "Support custom animation (fade, slide, scale)"
+        ]
+      },
+      "acceptance_criteria": [
+        "Items stagger in smoothly",
+        "Configurable stagger delay",
+        "Works with any children"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-ANIM-003",
+      "title": "Micro-interaction Library",
+      "module": "shared",
+      "category": "animation",
+      "priority": "low",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "Repeated micro-interaction patterns across components",
+        "goal": "Create utility classes/hooks for common micro-interactions",
+        "scope": "New animation utilities",
+        "user_impact": "Consistent, polished interactions everywhere"
+      },
+      "files": {
+        "create_if_needed": [
+          "src/components/motion/press.tsx",
+          "src/hooks/use-press-animation.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Press effect: scale(0.98) on mouse down",
+          "Hover lift: translateY(-2px) + shadow",
+          "Success pulse: brief glow effect",
+          "Create hooks: usePressAnimation, useHoverLift"
+        ]
+      },
+      "acceptance_criteria": [
+        "Press animation feels tactile",
+        "Hover lift adds depth",
+        "Utilities easy to apply to any element"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-PERF-001",
+      "title": "Bundle Size Analysis",
+      "module": "build",
+      "category": "performance",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Unknown bundle size, may have bloated dependencies",
+        "goal": "Analyze bundle, identify large dependencies, consider alternatives",
+        "scope": "Build analysis",
+        "user_impact": "Faster app load times"
+      },
+      "files": {
+        "target": [
+          "package.json",
+          "next.config.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Run: npx next build && npx @next/bundle-analyzer",
+          "Identify top 5 largest chunks",
+          "Look for duplicate dependencies",
+          "Consider lighter alternatives for large libs",
+          "Document findings"
+        ]
+      },
+      "acceptance_criteria": [
+        "Bundle analyzed and documented",
+        "Large dependencies identified",
+        "Optimization opportunities noted"
+      ],
+      "verification": {
+        "commands": [
+          "npm run build"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-PERF-002",
+      "title": "Image Optimization Audit",
+      "module": "build",
+      "category": "performance",
+      "priority": "low",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Images may not be optimized (wrong format, no lazy loading)",
+        "goal": "Ensure all images use next/image with proper sizing",
+        "scope": "All image usage",
+        "user_impact": "Faster image loading"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/**/*.tsx"
+        ],
+        "context": [
+          "next.config.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Search for <img> tags, replace with next/image",
+          "Add proper width/height or fill",
+          "Enable blur placeholder where appropriate",
+          "Verify images are lazy loaded by default"
+        ]
+      },
+      "acceptance_criteria": [
+        "All images use next/image",
+        "Images have proper dimensions",
+        "Images lazy load below fold"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-A11Y-001",
+      "title": "Screen Reader Testing",
+      "module": "dashboard",
+      "category": "accessibility",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "Dashboard not tested with actual screen readers",
+        "goal": "Test with NVDA/VoiceOver, fix any issues found",
+        "scope": "All dashboard components",
+        "user_impact": "Screen reader users can use dashboard"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/components/dashboard-view.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Test with NVDA (Windows) or VoiceOver (Mac)",
+          "Navigate entire dashboard with screen reader",
+          "Note any confusing announcements",
+          "Fix aria-labels, headings, live regions",
+          "Document findings"
+        ]
+      },
+      "acceptance_criteria": [
+        "Dashboard navigable with screen reader",
+        "All content announced meaningfully",
+        "No confusing or missing announcements"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-A11Y-002",
+      "title": "Automated Accessibility Testing",
+      "module": "build",
+      "category": "accessibility",
+      "priority": "medium",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "No automated a11y testing in CI",
+        "goal": "Add axe-core testing to catch accessibility regressions",
+        "scope": "Test setup",
+        "user_impact": "Prevents a11y regressions"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/__tests__/accessibility.test.ts"
+        ],
+        "context": [
+          "vitest.config.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Install @axe-core/react or jest-axe",
+          "Create a11y test for dashboard",
+          "Run axe on rendered component",
+          "Assert no violations",
+          "Add to CI pipeline"
+        ]
+      },
+      "acceptance_criteria": [
+        "A11y test runs with npm test",
+        "Dashboard passes axe audit",
+        "Test catches real violations"
+      ],
+      "verification": {
+        "commands": [
+          "npm test"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-FIX-001",
+      "title": "TypeScript Strict Mode Fixes",
+      "module": "build",
+      "category": "quality",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "pending",
+      "iterations": 2,
+      "description": {
+        "problem": "May have TypeScript errors or warnings being ignored",
+        "goal": "Zero TypeScript errors with strict mode",
+        "scope": "All dashboard files",
+        "user_impact": "More reliable code"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/**/*.tsx",
+          "src/modules/dashboard/**/*.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Run: npx tsc --noEmit",
+          "Fix all errors (no @ts-ignore)",
+          "Add proper types to all props",
+          "Ensure no 'any' types where avoidable"
+        ]
+      },
+      "acceptance_criteria": [
+        "npx tsc --noEmit exits with 0",
+        "No @ts-ignore comments",
+        "Props properly typed"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-FIX-002",
+      "title": "ESLint Warning Cleanup",
+      "module": "build",
+      "category": "quality",
+      "priority": "medium",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "ESLint warnings being ignored",
+        "goal": "Zero ESLint warnings in dashboard module",
+        "scope": "All dashboard files",
+        "user_impact": "Cleaner, more maintainable code"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/**/*.tsx"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Run: npm run lint",
+          "Fix all warnings (don't disable rules)",
+          "Remove unused imports",
+          "Fix dependency arrays in hooks",
+          "Ensure consistent formatting"
+        ]
+      },
+      "acceptance_criteria": [
+        "npm run lint shows no warnings",
+        "No eslint-disable comments",
+        "Code properly formatted"
+      ],
+      "verification": {
+        "commands": [
+          "npm run lint"
+        ]
+      }
+    },
+    {
+      "id": "FRONTEND-FIX-003",
+      "title": "Console.log Cleanup",
+      "module": "build",
+      "category": "quality",
+      "priority": "high",
+      "complexity": "easy",
+      "status": "pending",
+      "iterations": 1,
+      "description": {
+        "problem": "Development console.logs left in production code",
+        "goal": "Remove all console.log statements from dashboard",
+        "scope": "All dashboard files",
+        "user_impact": "Clean console, better performance"
+      },
+      "files": {
+        "target": [
+          "src/modules/dashboard/**/*.tsx",
+          "src/modules/dashboard/**/*.ts"
+        ]
+      },
+      "implementation": {
+        "steps": [
+          "Search for console.log in dashboard module",
+          "Remove or replace with proper logging",
+          "Keep error logs if needed (console.error)",
+          "Consider using debug library for dev logs"
+        ]
+      },
+      "acceptance_criteria": [
+        "No console.log in dashboard code",
+        "Console.error kept for real errors only",
+        "No debug output in production"
+      ],
+      "verification": {
+        "commands": [
+          "npx tsc --noEmit"
+        ]
+      }
+    }
+  ],
+  "completion_log": []
+}

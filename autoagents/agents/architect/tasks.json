@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "agent": "ARCHITECT",
+  "description": "Architecture and organization tasks",
+  "tasks": [
+    {
+      "id": "ARCH-001",
+      "title": "Folder Structure Audit",
+      "priority": "high",
+      "category": "organization",
+      "status": "pending",
+      "description": {
+        "problem": "Folder structure may have inconsistencies",
+        "goal": "Audit and document all folder patterns, identify issues"
+      },
+      "execution": {
+        "steps": [
+          "Map all top-level folders",
+          "Check naming consistency",
+          "Identify orphaned files",
+          "Document recommended structure"
+        ]
+      },
+      "verification": {
+        "success_criteria": ["Full folder map created", "Issues documented"]
+      }
+    },
+    {
+      "id": "ARCH-002",
+      "title": "Naming Convention Audit",
+      "priority": "medium",
+      "category": "conventions",
+      "status": "pending",
+      "description": {
+        "problem": "File and function naming may be inconsistent",
+        "goal": "Audit naming patterns and create style guide"
+      },
+      "patterns_to_check": [
+        "Components: PascalCase.tsx",
+        "Hooks: useCamelCase.ts",
+        "Utils: camelCase.ts",
+        "Types: types.ts or *.types.ts",
+        "Tests: *.test.ts or *.spec.ts"
+      ],
+      "verification": {
+        "success_criteria": ["All files categorized", "Violations documented"]
+      }
+    },
+    {
+      "id": "ARCH-003",
+      "title": "Dead Code Detection",
+      "priority": "medium",
+      "category": "cleanup",
+      "status": "pending",
+      "description": {
+        "problem": "Unused code may be accumulating",
+        "goal": "Find and safely remove dead code"
+      },
+      "execution": {
+        "steps": [
+          "Run knip or ts-unused-exports",
+          "Identify unused exports",
+          "Check for unreachable code",
+          "Create removal plan"
+        ]
+      },
+      "verification": {
+        "success_criteria": ["Dead code list created", "Safe to remove confirmed"]
+      }
+    },
+    {
+      "id": "ARCH-004",
+      "title": "Tech Debt Inventory",
+      "priority": "high",
+      "category": "debt",
+      "status": "pending",
+      "description": {
+        "problem": "Tech debt needs tracking and prioritization",
+        "goal": "Create comprehensive tech debt inventory"
+      },
+      "debt_indicators": [
+        "TODO comments",
+        "FIXME comments",
+        "any types",
+        "@ts-ignore directives",
+        "Disabled tests",
+        "Complex functions (>50 lines)"
+      ],
+      "verification": {
+        "success_criteria": ["All debt items catalogued", "Priority assigned"]
+      }
+    }
+  ]
+}

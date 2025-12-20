@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
 """
-SENTINEL-DEV Runner - Autonomous Dev Server Guardian
+SENTINEL Agent Runner - Autonomous Dev Server Guardian
 
-Refactored to use shared autoagents.lib utilities.
+Migrated to agents/ folder structure.
 Monitors Control Station dev environment health and auto-repairs issues.
 
 Usage:
-    python -m autoagents.runners.sentinel_runner                    # Single check
-    python -m autoagents.runners.sentinel_runner -i 5               # 5 iterations
-    python -m autoagents.runners.sentinel_runner --continuous       # Never stop
-    python -m autoagents.runners.sentinel_runner --deep             # Force deep check
+    python -m autoagents.agents.sentinel.runner                    # Single check
+    python -m autoagents.agents.sentinel.runner -i 5               # 5 iterations
+    python -m autoagents.agents.sentinel.runner --continuous       # Never stop
+    python -m autoagents.agents.sentinel.runner --deep             # Force deep check
 """
 
 import argparse
 import asyncio
 import json
-import subprocess
 import sys
-import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -42,6 +40,8 @@ from autoagents.lib.output import (
 from autoagents.lib.client import create_agent_client
 from autoagents.lib.streaming import stream_agent_response
 from autoagents.lib.logging_utils import create_session_log, log_iteration, log_completion
+from autoagents.lib.comms import CommsManager
+from autoagents.lib.budget import TokenBudget
 from autoagents.agents.emojis import SENTINEL_EMOJI
 from autoagents.agents.sentinel.health_monitors import HealthMonitor, HealthStatus
 from autoagents.agents.sentinel.repair_workflows import RepairWorkflow
@@ -49,29 +49,44 @@ from autoagents.lib.workspace import resolve_workspace, WorkspacePaths
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CONFIGURATION
+# CONFIGURATION - Load from config.json
 # ═══════════════════════════════════════════════════════════════════════════════
+
+AGENT_DIR = Path(__file__).parent
+CONFIG_FILE = AGENT_DIR / "config.json"
+TASKS_FILE = AGENT_DIR / "tasks.json"
+
+def load_config() -> dict:
+    """Load agent configuration from config.json."""
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print_error(f"Failed to load config: {e}")
+        return {}
+
+CONFIG = load_config()
 
 CONTROL_STATION = Path("C:/Users/ToleV/Desktop/TestingFolder/control-station")
 COMMS_MD = CONTROL_STATION / ".claude" / "COMMS.md"
-
 DEV_SERVER_URL = "http://127.0.0.1:3000"
 DEV_SERVER_PORT = 3000
 
 SENTINEL_CONFIG = {
-    "model": "claude-sonnet-4-20250514",
-    "name": "SENTINEL-DEV",
-    "role": "DevOps Guardian & Auto-Repair",
-    "emoji": SENTINEL_EMOJI["shield"],
+    "model": CONFIG.get("model", "claude-sonnet-4-20250514"),
+    "name": CONFIG.get("name", "SENTINEL"),
+    "role": CONFIG.get("role", "DevOps Guardian & Auto-Repair"),
+    "emoji": CONFIG.get("emoji", "🛡️"),
 }
 
+TOKEN_BUDGET_CONFIG = CONFIG.get("token_budget", {})
 TOKEN_BUDGET = {
-    "daily_limit": 10000,
+    "daily_limit": TOKEN_BUDGET_CONFIG.get("daily_limit", 10000),
     "quick_check": 0,
     "smart_check": 500,
     "deep_check": 2000,
     "repair": 3000,
-    "warning_threshold": 0.8,
+    "warning_threshold": TOKEN_BUDGET_CONFIG.get("warning_threshold", 0.8),
 }
 
 RATE_LIMITS = {
@@ -106,41 +121,25 @@ class SentinelState:
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# LOGGING TO COMMS.MD
+# COMMS.MD INTEGRATION
 # ═══════════════════════════════════════════════════════════════════════════════
+
+comms = CommsManager(COMMS_MD, agent_id="SENTINEL", emoji="🛡️")
+
 
 def log_to_comms(event_type: str, details: dict):
     """Append log entry to COMMS.md for agent coordination."""
-    try:
-        if not COMMS_MD.parent.exists():
-            COMMS_MD.parent.mkdir(parents=True, exist_ok=True)
-
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        entry = f"""
-### {SENTINEL_EMOJI['shield']} SENTINEL-DEV - {timestamp}
-**Event:** {event_type}
-**Details:**
-```json
-{json.dumps(details, indent=2)}
-```
-
-"""
-        with open(COMMS_MD, "a", encoding="utf-8") as f:
-            f.write(entry)
-
-    except Exception as e:
-        print_warning(f"Failed to log to COMMS.md: {e}")
+    comms.log_event(event_type, details)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TASK MANAGEMENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def load_tasks(tasks_file: Path) -> dict:
-    """Load sentinel task configuration."""
+def load_tasks() -> dict:
+    """Load sentinel task configuration from local tasks.json."""
     try:
-        with open(tasks_file, "r", encoding="utf-8") as f:
+        with open(TASKS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         print_error(f"Failed to load sentinel tasks: {e}")
@@ -163,6 +162,12 @@ def get_health_tasks(tasks_config: dict) -> list[dict]:
 
 def get_system_prompt() -> str:
     """Get system prompt for sentinel agent."""
+    # Try to load from prompts/system_prompt.md
+    prompt_file = AGENT_DIR / "prompts" / "system_prompt.md"
+    if prompt_file.exists():
+        return prompt_file.read_text(encoding="utf-8")
+
+    # Fallback to inline prompt
     return f"""You are SENTINEL-DEV, an AGGRESSIVE autonomous DevOps agent for Control Station.
 
 ⚠️ CRITICAL MINDSET: You are NOT here to conserve tokens. You are here to WORK!
@@ -264,8 +269,9 @@ def print_sentinel_banner():
     print(f"""
 {Style.RED}╔══════════════════════════════════════════════════════════════════════╗
 ║                                                                      ║
-║   {Style.BOLD}🛡️ SENTINEL-DEV v2.0{Style.RESET}{Style.RED}                                            ║
+║   {Style.BOLD}🛡️ SENTINEL v2.1{Style.RESET}{Style.RED}                                               ║
 ║   {Style.DIM}Autonomous Dev Server Guardian + AI Diagnostics{Style.RESET}{Style.RED}                   ║
+║   {Style.DIM}Now using agents/ folder structure{Style.RESET}{Style.RED}                                ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝{Style.RESET}
 """)
@@ -284,10 +290,10 @@ def print_cycle_header(cycle: int, max_iterations: int, task_id: str, task_title
 """)
 
 
-async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
+async def monitoring_loop(args, workspace: WorkspacePaths):
     """Main monitoring loop - REAL Claude AI execution pattern."""
     state = SentinelState()
-    tasks_config = load_tasks(tasks_file)
+    tasks_config = load_tasks()
 
     health_tasks = get_health_tasks(tasks_config)
     project_info = tasks_config.get("project", {"root": str(CONTROL_STATION)})
@@ -307,7 +313,7 @@ async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
     print_info(f"Mode: {'CONTINUOUS' if max_iterations == -1 else f'LIMITED ({max_iterations} iterations)'}")
     print()
 
-    # Log session start
+    # Log session start to COMMS.md
     log_to_comms("session_start", {
         "mode": "continuous" if max_iterations == -1 else f"limited_{max_iterations}",
         "health_tasks": len(health_tasks),
@@ -383,7 +389,7 @@ async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
                     project_dir=CONTROL_STATION,
                     model=SENTINEL_CONFIG["model"],
                     system_prompt=system_prompt,
-                    allowed_tools=["Read", "Write", "Edit", "Glob", "Grep", "Bash"],
+                    allowed_tools=CONFIG.get("allowed_tools", ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]),
                     settings_filename=".claude_sentinel_settings.json"
                 )
 
@@ -423,7 +429,7 @@ async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
             await asyncio.sleep(3)
 
     except KeyboardInterrupt:
-        print(f"\n\n{SENTINEL_EMOJI['shield']} SENTINEL-DEV interrupted by user.")
+        print(f"\n\n{SENTINEL_EMOJI['shield']} SENTINEL interrupted by user.")
 
     # Session complete
     log_completion(log_file, "completed", state.cycle_count, state.token_usage_today)
@@ -452,14 +458,14 @@ async def monitoring_loop(args, workspace: WorkspacePaths, tasks_file: Path):
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="SENTINEL-DEV - Autonomous Dev Server Guardian",
+        description="SENTINEL - Autonomous Dev Server Guardian",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-    python -m autoagents.runners.sentinel_runner              # Single check
-    python -m autoagents.runners.sentinel_runner -i 5         # 5 iterations
-    python -m autoagents.runners.sentinel_runner --continuous # Run forever
-    python -m autoagents.runners.sentinel_runner --deep       # Force deep check
+    python -m autoagents.agents.sentinel.runner              # Single check
+    python -m autoagents.agents.sentinel.runner -i 5         # 5 iterations
+    python -m autoagents.agents.sentinel.runner --continuous # Run forever
+    python -m autoagents.agents.sentinel.runner --deep       # Force deep check
         """
     )
     parser.add_argument("-i", "--iterations", type=int, default=1, help="Max iterations (default: 1)")
@@ -481,17 +487,15 @@ def main():
     print_sentinel_banner()
 
     if args.list:
-        tasks_file = workspace.tasks_dir / "sentinel.json"
-        tasks_config = load_tasks(tasks_file)
+        tasks_config = load_tasks()
         health_tasks = get_health_tasks(tasks_config)
         print(f"\n{Style.CYAN}Health Tasks ({len(health_tasks)}):{Style.RESET}")
         for task in health_tasks[:10]:
             print(f"  - {task['id']}: {task['title'][:60]}")
         return
 
-    tasks_file = workspace.tasks_dir / "sentinel.json"
-    if not tasks_file.exists():
-        print_error("Sentinel tasks file not found")
+    if not TASKS_FILE.exists():
+        print_error(f"Sentinel tasks file not found: {TASKS_FILE}")
         sys.exit(1)
 
     if not CONTROL_STATION.exists():
@@ -499,7 +503,7 @@ def main():
         sys.exit(1)
 
     print_info(f"Control Station: {CONTROL_STATION}")
-    print_info(f"Tasks file: {tasks_file}")
+    print_info(f"Tasks file: {TASKS_FILE}")
     print_info(f"Model: {SENTINEL_CONFIG['model']}")
 
     if args.dry_run:
@@ -507,12 +511,17 @@ def main():
         return
 
     try:
-        asyncio.run(monitoring_loop(args, workspace, tasks_file))
+        asyncio.run(monitoring_loop(args, workspace))
     except KeyboardInterrupt:
-        print(f"\n\n{SENTINEL_EMOJI['shield']} SENTINEL-DEV interrupted by user.")
+        print(f"\n\n{SENTINEL_EMOJI['shield']} SENTINEL interrupted by user.")
     except Exception as e:
         print_error(f"Fatal error: {e}")
         sys.exit(1)
+
+
+def run():
+    """Entry point for pyproject.toml scripts."""
+    main()
 
 
 if __name__ == "__main__":

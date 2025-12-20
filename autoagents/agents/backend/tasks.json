@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "agent": "BACKEND",
+  "description": "Rust/Axum/Tauri backend development tasks",
+  "tasks": [
+    {
+      "id": "BACK-001",
+      "title": "Health Check Endpoint",
+      "priority": "high",
+      "category": "api",
+      "status": "pending",
+      "description": {
+        "problem": "Need a health check endpoint for monitoring",
+        "goal": "Create /api/health endpoint returning system status"
+      },
+      "files": ["src-tauri/src/api/mod.rs", "src-tauri/src/api/health.rs"],
+      "verification": {
+        "commands": ["cargo check", "cargo test"],
+        "success_criteria": ["Endpoint returns 200", "Tests pass"]
+      }
+    },
+    {
+      "id": "BACK-002",
+      "title": "Database Migration System",
+      "priority": "high",
+      "category": "database",
+      "status": "pending",
+      "description": {
+        "problem": "Need reliable database migrations for schema changes",
+        "goal": "Implement sqlx migrations with version tracking"
+      },
+      "files": ["src-tauri/migrations/", "src-tauri/src/database/mod.rs"],
+      "verification": {
+        "commands": ["cargo sqlx prepare --check"],
+        "success_criteria": ["Migrations apply cleanly", "Rollback works"]
+      }
+    },
+    {
+      "id": "BACK-003",
+      "title": "Error Handling Standardization",
+      "priority": "medium",
+      "category": "architecture",
+      "status": "pending",
+      "description": {
+        "problem": "Inconsistent error handling across commands",
+        "goal": "Create unified AppError type with proper conversions"
+      },
+      "files": ["src-tauri/src/error.rs", "src-tauri/src/commands/*.rs"],
+      "verification": {
+        "commands": ["cargo check", "cargo clippy"],
+        "success_criteria": ["No unwrap() in command handlers", "Errors are user-friendly"]
+      }
+    }
+  ]
+}

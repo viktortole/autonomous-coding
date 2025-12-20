@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "agent": "TESTER",
+  "description": "Testing and coverage tasks",
+  "tasks": [
+    {
+      "id": "TEST-001",
+      "title": "Coverage Analysis",
+      "priority": "high",
+      "category": "coverage",
+      "status": "pending",
+      "description": {
+        "problem": "Need to understand current test coverage",
+        "goal": "Run coverage analysis and identify gaps"
+      },
+      "execution": {
+        "commands": ["npm test -- --coverage --run"],
+        "steps": [
+          "Run coverage report",
+          "Identify uncovered files",
+          "Prioritize by importance",
+          "Create test plan"
+        ]
+      },
+      "targets": {
+        "statements": 80,
+        "branches": 75,
+        "functions": 80,
+        "lines": 80
+      },
+      "verification": {
+        "success_criteria": ["Coverage report generated", "Gaps identified"]
+      }
+    },
+    {
+      "id": "TEST-002",
+      "title": "Write Missing Hook Tests",
+      "priority": "medium",
+      "category": "hooks",
+      "status": "pending",
+      "description": {
+        "problem": "Custom hooks may lack tests",
+        "goal": "Add tests for all custom hooks"
+      },
+      "hook_locations": ["src/hooks/", "src/modules/*/hooks/"],
+      "test_template": "use renderHook and act patterns",
+      "verification": {
+        "success_criteria": ["All hooks have tests", "Edge cases covered"]
+      }
+    },
+    {
+      "id": "TEST-003",
+      "title": "Write Missing Component Tests",
+      "priority": "medium",
+      "category": "components",
+      "status": "pending",
+      "description": {
+        "problem": "Some components lack proper tests",
+        "goal": "Add tests for key components"
+      },
+      "component_locations": ["src/components/", "src/modules/*/components/"],
+      "test_focus": [
+        "Rendering",
+        "User interactions",
+        "Props handling",
+        "Error states"
+      ],
+      "verification": {
+        "success_criteria": ["Core components tested", "Interactions verified"]
+      }
+    },
+    {
+      "id": "TEST-004",
+      "title": "Fix Flaky Tests",
+      "priority": "high",
+      "category": "stability",
+      "status": "pending",
+      "description": {
+        "problem": "Some tests may be flaky (pass/fail randomly)",
+        "goal": "Identify and fix flaky tests"
+      },
+      "execution": {
+        "steps": [
+          "Run tests multiple times",
+          "Identify inconsistent tests",
+          "Analyze flakiness cause",
+          "Fix timing/async issues"
+        ]
+      },
+      "verification": {
+        "commands": ["npm test -- --run --retry 3"],
+        "success_criteria": ["All tests pass consistently"]
+      }
+    }
+  ]
+}

@@ -27,9 +27,19 @@ dev = [
 ]
 
 [project.scripts]
+# Legacy runners (kept for backwards compatibility)
 autoagent-task = "autoagents.runners.task_runner:run"
 autoagent-frontend = "autoagents.runners.frontend_runner:run"
 autoagent-sentinel = "autoagents.runners.sentinel_runner:run"
+
+# New agent-folder structure (7 agents)
+commander = "autoagents.agents.commander.runner:run"
+sentinel = "autoagents.agents.sentinel.runner:run"
+frontend = "autoagents.agents.frontend.runner:run"
+backend = "autoagents.agents.backend.runner:run"
+architect = "autoagents.agents.architect.runner:run"
+debugger = "autoagents.agents.debugger.runner:run"
+tester = "autoagents.agents.tester.runner:run"
 
 [tool.hatch.build.targets.wheel]
 packages = ["autoagents"]

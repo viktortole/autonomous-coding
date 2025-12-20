@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "agent": "DEBUGGER",
+  "description": "Bug investigation and fixing tasks",
+  "tasks": [
+    {
+      "id": "DEBUG-001",
+      "title": "TypeScript Error Investigation",
+      "priority": "high",
+      "category": "type-errors",
+      "status": "pending",
+      "description": {
+        "problem": "TypeScript compilation may have errors",
+        "goal": "Find and fix all TypeScript errors"
+      },
+      "execution": {
+        "commands": ["npx tsc --noEmit"],
+        "steps": [
+          "Run TypeScript compiler",
+          "Parse error output",
+          "Investigate each error",
+          "Fix with minimal changes"
+        ]
+      },
+      "verification": {
+        "commands": ["npx tsc --noEmit"],
+        "success_criteria": ["Zero TypeScript errors"]
+      }
+    },
+    {
+      "id": "DEBUG-002",
+      "title": "Test Failure Investigation",
+      "priority": "high",
+      "category": "test-failures",
+      "status": "pending",
+      "description": {
+        "problem": "Some tests may be failing",
+        "goal": "Investigate and fix failing tests"
+      },
+      "execution": {
+        "commands": ["npm test -- --run"],
+        "steps": [
+          "Run test suite",
+          "Identify failing tests",
+          "Analyze failure reason",
+          "Determine if test or code is wrong",
+          "Fix appropriately"
+        ]
+      },
+      "verification": {
+        "commands": ["npm test -- --run"],
+        "success_criteria": ["All tests pass", "No flaky tests"]
+      }
+    },
+    {
+      "id": "DEBUG-003",
+      "title": "Runtime Error Analysis",
+      "priority": "critical",
+      "category": "runtime",
+      "status": "pending",
+      "description": {
+        "problem": "Runtime errors may occur during app usage",
+        "goal": "Find and fix runtime errors from console/logs"
+      },
+      "log_locations": [
+        "Browser DevTools Console",
+        "Tauri logs",
+        "Server stderr"
+      ],
+      "verification": {
+        "success_criteria": ["No console errors", "App functions correctly"]
+      }
+    }
+  ]
+}
