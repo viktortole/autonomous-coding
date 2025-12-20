@@ -469,6 +469,7 @@ Examples:
         """
     )
     parser.add_argument("-i", "--iterations", type=int, default=1, help="Max iterations (default: 1)")
+    parser.add_argument("--task", type=str, help="Specific task ID to work on (from COMMANDER)")
     parser.add_argument("--deep", action="store_true", help="Force deep health check")
     parser.add_argument("--repair", action="store_true", help="Force repair mode")
     parser.add_argument("--continuous", action="store_true", help="Run forever")
