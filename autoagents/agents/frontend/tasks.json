@@ -56,8 +56,7 @@
       "FRONTEND-A11Y-001",
       "FRONTEND-A11Y-002",
       "FRONTEND-FIX-001",
-      "FRONTEND-FIX-002",
-      "FRONTEND-FIX-003"
+      "FRONTEND-FIX-002"
     ],
     "in_progress": [
       "FRONTEND-DASH-003",
@@ -73,7 +72,8 @@
       "FRONTEND-DASH-014",
       "FRONTEND-DASH-015",
       "FRONTEND-DASH-016",
-      "FRONTEND-DASH-017"
+      "FRONTEND-DASH-017",
+      "FRONTEND-FIX-003"
     ],
     "completed": [
       "FRONTEND-DASH-001",
@@ -2151,7 +2151,7 @@
       "category": "quality",
       "priority": "high",
       "complexity": "easy",
-      "status": "pending",
+      "status": "in_progress",
       "iterations": 1,
       "description": {
         "problem": "Development console.logs left in production code",
