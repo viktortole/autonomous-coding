@@ -513,19 +513,18 @@ def spawn_agent_for_budget(allocation: AgentAllocation) -> tuple[subprocess.Pope
         spawn_env = os.environ.copy()
         spawn_env.update(env_vars)
 
+        # Don't capture stdout - let agent output flow directly to terminal
+        # This gives real-time visibility into what agents are doing
         process = subprocess.Popen(
             cmd,
             cwd=str(AUTONOMOUS_CODING),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            encoding='utf-8',
-            errors='replace',
-            bufsize=1,
             env=spawn_env,
         )
 
         print(f"  {Style.GREEN}✓ Agent spawned successfully (PID: {process.pid}){Style.RESET}")
+        print(f"\n{Style.CYAN}{'─' * 78}{Style.RESET}")
+        print(f"  {Style.BOLD}📺 LIVE AGENT OUTPUT:{Style.RESET}")
+        print(f"{Style.CYAN}{'─' * 78}{Style.RESET}\n")
         return process, context
 
     except Exception as e:
